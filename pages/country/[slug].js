@@ -576,7 +576,8 @@ export async function getStaticProps({params}) {
     const featuredUniversity = await client.query({
         query : GET_FEATURED_UNIVERSITY,
         variables: {
-            type: "slider"
+            type: "country",
+            start_date : today
         },
     });
 
