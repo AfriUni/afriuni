@@ -9,7 +9,7 @@ const HomeFeaturedUniversityCard = (props) => {
         <div className="border-l border-r border-b border-gray-200 rounded-b-xl p-2 md:p-6 -mt-10 md:-mt-16 flex-1 flex-col flex">
             <div className="flex-none">
                 <div className="border border-gray-200 p-2 inline-block bg-white rounded-xl md:mb-2">
-                    <img src={props.data.logo} alt="" className="h-14 w-6 md:w-12"/>
+                    <img src={props.data.logo} alt="" className="h-10 md:h-14 w-10 md:w-12"/>
                 </div>
             </div>
             <Link href={`/university/${props.data.slug}`}>

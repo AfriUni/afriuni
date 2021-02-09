@@ -9,8 +9,8 @@ const CountryMenu = (props) => {
 
         <div className="flex flex-col md:block md:space-y-5 md:py-5 bg-white h-full">
             {props.data.map((item, i) => {
-                return  <Link href="#">
-                    <a className="mr-10 font-medium md:font-normal hover:text-custom-secondary inline-block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0 uppercase" key={i}>
+                return  <Link href={`/country/${item.slug}`} key={i}>
+                    <a className="mr-10 font-medium md:font-normal hover:text-custom-secondary inline-block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0 uppercase">
                         {item.name}
                     </a>
                 </Link>

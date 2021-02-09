@@ -3,7 +3,7 @@ import CountryFragment from "./fragments/country";
 
 export const GET_COUNTRIES = gql `
     query {
-        countries : locations(where: {parent: 0}, first: 100) {
+        countries : locations(where: {parent: 0}, first: 1000) {
             nodes {
               ...CountryFragment      
             }

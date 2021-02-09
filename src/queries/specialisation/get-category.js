@@ -10,26 +10,26 @@ export const GET_CATEGORY_BY = gql`
               databaseId
               university_count
               count
-              children (first: 100) {
+              children (first: 1000) {
                   nodes {
                     id
                     databaseId
                     name
                     slug
-                    courses (first: 100) {
+                    courses (first: 1000) {
                       nodes{
                         id
                         databaseId
                         title
                         slug
-                        university {
+                        university (first: 1000){
                           nodes {
                             id
                             title
                             databaseId
                             logo              
                             slug
-                            locations {
+                            locations (first: 1000){
                               nodes {
                                 name
                                 is_country
@@ -37,7 +37,7 @@ export const GET_CATEGORY_BY = gql`
                             }
                           }
                         }
-                        studiesLevel {
+                        studiesLevel (first: 1000){
                           nodes {
                             name
                           }

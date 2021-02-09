@@ -10,7 +10,7 @@ const HomeFeaturedCourseCard = (props) => {
                 {props.data.studiesLevel.nodes[0].name}
             </div>
         </div>
-        <Link href={`/courses/${props.data.databaseId}/${props.data.slug}`}>
+        <Link href={`/course/${props.data.databaseId}/${props.data.slug}`}>
             <a className="text-custom-secondary md:text-xl font-medium mb-3 md:mt-5 block break-words truncate-2-lines max-h-12 leading-6 md:max-h-16 md:leading-8 flex-1">
                 {props.data.title}
             </a>

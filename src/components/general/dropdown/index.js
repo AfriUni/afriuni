@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 
 
-const Dropdown = ({ title, className = '', classDropdown = '', classChevron = '', position = 'right', children, maxHeight = ""}) => {
+const Dropdown = ({ title, className = '', classDropdown = '', classChevron = '', position = 'right', children, maxHeight = "", onChange}) => {
 
     const [initPosition, setInitPosition] = React.useState('origin-top-right right-0');
     const [isOpen, setIsOpen] = React.useState(false);
@@ -15,11 +15,12 @@ const Dropdown = ({ title, className = '', classDropdown = '', classChevron = ''
         return React.cloneElement(child, {
             index,
             isActive: currentIndex === index,
-            onChangeTitle: (e, href, title) => {
+            onChangeTitle: (e, href, title, value) => {
                 if(href === '#') e.preventDefault();
                 setCurrentTitle(title);
                 setCurrentIndex(index);
                 setIsOpen(false);
+                if(onChange) onChange(value);
             }
         });
     });
@@ -91,11 +92,12 @@ export const ItemDropdown = ({
      classActive = 'bg-gray-100 text-gray-900',
      classInactive = 'text-gray-700',
      children,
+     title,
      value,
      isActive
 }) => {
 
-    return <a href={href} className={`block px-4 py-2 leading-5 focus:outline-none ${className} ${classInactive} ${isActive ? classActive : ""}`} role="menuitem" onClick={(e) => onChangeTitle(e, href, value)}>
+    return <a href={href} className={`block px-4 py-2 leading-5 focus:outline-none ${className} ${classInactive} ${isActive ? classActive : ""}`} role="menuitem" onClick={(e) => onChangeTitle(e, href, title, value)}>
         {children}
     </a>
 

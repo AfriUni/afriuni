@@ -11,7 +11,7 @@ export const GET_FEATURED_COURSE = gql`
                   databaseId
                   title
                   slug
-                  university {
+                  university (first: 1000) {
                     nodes {
                       id
                       title
@@ -26,7 +26,7 @@ export const GET_FEATURED_COURSE = gql`
                       }
                     }
                   }
-                  studiesLevel {
+                  studiesLevel (first: 1000) {
                     nodes {
                       name
                     }
