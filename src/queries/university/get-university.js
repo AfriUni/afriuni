@@ -3,6 +3,9 @@ import { gql } from '@apollo/client';
 const GET_UNIVERSITY = gql`
   query GET_UNIVERSITY($id: ID!) {
     university(id: $id, idType: DATABASE_ID) {
+      seo {
+        title
+      }
       title
       address
       logo
@@ -24,6 +27,7 @@ const GET_UNIVERSITY = gql`
           name
           is_country
           flag
+          slug
         }
       }
       faculties {

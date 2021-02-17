@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/no-danger */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from 'react';
 import Head from 'next/dist/next-server/lib/head';
@@ -56,6 +59,7 @@ const getLocationData = (nodes) => {
 
   payload.city = nodes.find((x) => !x.is_country)?.name;
   payload.country = nodes.find((x) => x.is_country)?.name;
+  payload.citySlug = nodes.find((x) => x.is_country)?.slug;
   payload.flag = nodes.find((x) => x.is_country)?.flag;
 
   return payload;
@@ -68,6 +72,7 @@ const UniversityPage = (props) => {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState({
     city: '',
+    citySlug: '',
     country: '',
     flag: '',
   });
@@ -181,7 +186,7 @@ const UniversityPage = (props) => {
   return (
     <div>
       <Head>
-        <title>University - Afriuni</title>
+        <title>{data?.seo?.title}</title>
       </Head>
 
       <div className="bg-white">
@@ -195,8 +200,8 @@ const UniversityPage = (props) => {
               <a>Countries</a>
             </Link>
             <FontAwesomeIcon icon={faChevronRight} className="w-2" />
-            <Link href="/country/south-africa">
-              <a>South Africa</a>
+            <Link href={`/country/${location.citySlug}`}>
+              <a>{location.city}</a>
             </Link>
             <FontAwesomeIcon icon={faChevronRight} className="hidden w-2 md:inline" />
             <span className="hidden md:inline">{data?.title}</span>
@@ -236,7 +241,10 @@ const UniversityPage = (props) => {
                       </div>
                     </div>
                     <div>
-                      <div className="flex items-center px-2 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4">
+                      <div
+                        className="flex items-center px-2 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
+                        onClick={() => window.open(data?.video_link, '_blank')}
+                      >
                         <FontAwesomeIcon icon={faPlayCircle} className="w-3 md:w-5" />{' '}
                         <span>Watch Video</span>
                       </div>
@@ -597,7 +605,6 @@ const UniversityPage = (props) => {
                 <span>Admission</span>
               </div>
               <div className="px-4 py-6 md:p-6">
-                <div className="mb-3 text-lg font-normal text-black">Key infos :</div>
                 <div className="mb-6 md:pl-10">
                   <ShowMoreText
                     /* Default options */
@@ -608,81 +615,11 @@ const UniversityPage = (props) => {
                     anchorClass="text-custom-primary font-normal"
                     expanded={false}
                   >
-                    <ul>
-                      <li>The Application fee for egyptians is 500 EGP</li>
-                      <li>
-                        The tution fees for undergraduates usually far between 60,000 to 10,0000
-                        EGP.
-                      </li>
-                      <li>The main application period is between Feb - May</li>
-                      <li>Scholarship are available for very smart student</li>
-                    </ul>
-                  </ShowMoreText>
-                </div>
-                <div className="mb-3 text-lg font-normal text-black">Admission Requirements:</div>
-                <div className="mb-6 md:pl-10">
-                  <ShowMoreText
-                    /* Default options */
-                    lines={5}
-                    more="Read more"
-                    less="Show less"
-                    className="text-justify"
-                    anchorClass="text-custom-primary font-normal"
-                    expanded={false}
-                  >
-                    <ul>
-                      <li>The Application fee for egyptians is 500 EGP</li>
-                      <li>
-                        The tution fees for undergraduates usually far between 60,000 to 10,0000
-                        EGP.
-                      </li>
-                      <li>The main application period is between Feb - May</li>
-                      <li>Scholarship are available for very smart student</li>
-                    </ul>
-                  </ShowMoreText>
-                </div>
-                <div className="mb-3 text-lg font-normal text-black">How to Apply:</div>
-                <div className="mb-6 md:pl-10">
-                  <ShowMoreText
-                    /* Default options */
-                    lines={5}
-                    more="Read more"
-                    less="Show less"
-                    className="text-justify"
-                    anchorClass="text-custom-primary font-normal"
-                    expanded={true}
-                  >
-                    <ul>
-                      <li>The Application fee for egyptians is 500 EGP</li>
-                      <li>
-                        The tution fees for undergraduates usually far between 60,000 to 10,0000
-                        EGP.
-                      </li>
-                      <li>The main application period is between Feb - May</li>
-                      <li>Scholarship are available for very smart student</li>
-                    </ul>
-                  </ShowMoreText>
-                </div>
-                <div className="mb-3 text-lg font-normal text-black">Foreign Students:</div>
-                <div className="mb-6 md:pl-10">
-                  <ShowMoreText
-                    /* Default options */
-                    lines={5}
-                    more="Read more"
-                    less="Show less"
-                    className="text-justify"
-                    anchorClass="text-custom-primary font-normal"
-                    expanded={true}
-                  >
-                    <ul>
-                      <li>The Application fee for egyptians is 500 EGP</li>
-                      <li>
-                        The tution fees for undergraduates usually far between 60,000 to 10,0000
-                        EGP.
-                      </li>
-                      <li>The main application period is between Feb - May</li>
-                      <li>Scholarship are available for very smart student</li>
-                    </ul>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data?.admission_detail,
+                      }}
+                    />
                   </ShowMoreText>
                 </div>
               </div>
@@ -695,163 +632,125 @@ const UniversityPage = (props) => {
             <div className="px-2 mb-6 md:p-0">
               <Accordion className={styles.accordion_2} allowZeroExpanded allowMultipleExpanded>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <AccordionItem>
-                    <AccordionItemHeading>
-                      <AccordionItemButton className={styles.accordion_heading_2}>
-                        <div className={`font-normal`}>
-                          Faculty of Information Technology and Computing
-                        </div>
-                        <div className="flex justify-center w-1/5 pr-6 text-custom-primary">
-                          <AccordionItemState>
-                            {({ expanded }) =>
-                              expanded ? (
-                                <FontAwesomeIcon
-                                  icon={faMinus}
-                                  className="w-4 h-4 mt-2 text-base"
-                                />
-                              ) : (
-                                <FontAwesomeIcon icon={faPlus} className="w-4 h-4 mt-2 text-base" />
-                              )
-                            }
-                          </AccordionItemState>
-                        </div>
-                      </AccordionItemButton>
-                    </AccordionItemHeading>
-                    <AccordionItemPanel className="w-full px-6 pb-6 bg-white">
-                      <Link href={'/'}>
-                        <a className="inline-block w-full px-0 py-2 font-normal text-left text-black">
-                          Institute of Public Health
-                        </a>
-                      </Link>
-                      <Accordion className={styles.accordion_2} allowZeroExpanded>
-                        <AccordionItem>
-                          <AccordionItemHeading>
-                            <AccordionItemButton className={styles.accordion_subheading}>
-                              <div className="text-sm font-normal text-black">
-                                Faculty of Information
-                              </div>
-                              <div className="flex justify-center w-auto px-1 py-0 text-red-400 border border-red-400">
-                                <AccordionItemState>
-                                  {({ expanded }) =>
-                                    expanded ? (
-                                      <FontAwesomeIcon icon={faMinus} className="w-2 text-base" />
-                                    ) : (
-                                      <FontAwesomeIcon icon={faPlus} className="w-2 text-base" />
-                                    )
-                                  }
-                                </AccordionItemState>
-                              </div>
-                            </AccordionItemButton>
-                          </AccordionItemHeading>
-                          <AccordionItemPanel className="px-4 py-1">
-                            <Link href={'/'}>
-                              <a className="inline-block px-4 py-2 font-normal text-left text-black">
-                                Institute of Public Health
-                              </a>
-                            </Link>
-                          </AccordionItemPanel>
-                        </AccordionItem>
-                      </Accordion>
-                    </AccordionItemPanel>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <AccordionItemHeading>
-                      <AccordionItemButton className={styles.accordion_heading_2}>
-                        <div className={`font-normal`}>
-                          Faculty of Information Technology and Computing
-                        </div>
-                        <div className="flex justify-center w-1/5 pr-6 text-custom-primary">
-                          <AccordionItemState>
-                            {({ expanded }) =>
-                              expanded ? (
-                                <FontAwesomeIcon
-                                  icon={faMinus}
-                                  className="w-4 h-4 mt-2 text-base"
-                                />
-                              ) : (
-                                <FontAwesomeIcon icon={faPlus} className="w-4 h-4 mt-2 text-base" />
-                              )
-                            }
-                          </AccordionItemState>
-                        </div>
-                      </AccordionItemButton>
-                    </AccordionItemHeading>
-                    <AccordionItemPanel className="w-full px-6 pb-6 bg-white">
-                      <Link href={'/'}>
-                        <a className="inline-block w-full px-0 py-2 font-normal text-left text-black">
-                          Institute of Public Health
-                        </a>
-                      </Link>
-                      <Accordion className={styles.accordion_2} allowZeroExpanded>
-                        <AccordionItem>
-                          <AccordionItemHeading>
-                            <AccordionItemButton className={styles.accordion_subheading}>
-                              <div className="text-sm font-normal text-black">
-                                Faculty of Information
-                              </div>
-                              <div className="flex justify-center w-auto px-1 py-0 text-red-400 border border-red-400">
-                                <AccordionItemState>
-                                  {({ expanded }) =>
-                                    expanded ? (
-                                      <FontAwesomeIcon icon={faMinus} className="w-2 text-base" />
-                                    ) : (
-                                      <FontAwesomeIcon icon={faPlus} className="w-2 text-base" />
-                                    )
-                                  }
-                                </AccordionItemState>
-                              </div>
-                            </AccordionItemButton>
-                          </AccordionItemHeading>
-                          <AccordionItemPanel className="px-4 py-1">
-                            <Link href={'/'}>
-                              <a className="inline-block px-4 py-2 font-normal text-left text-black">
-                                Institute of Public Health
-                              </a>
-                            </Link>
-                          </AccordionItemPanel>
-                        </AccordionItem>
-                      </Accordion>
-                    </AccordionItemPanel>
-                  </AccordionItem>
+                  {data?.faculties &&
+                    data?.faculties.length > 0 &&
+                    data?.faculties.map((faculty) => (
+                      <AccordionItem>
+                        <AccordionItemHeading>
+                          <AccordionItemButton className={styles.accordion_heading_2}>
+                            <div className={`font-normal`}>{faculty.name}</div>
+                            <div className="flex justify-center w-1/5 pr-6 text-custom-primary">
+                              <AccordionItemState>
+                                {({ expanded }) =>
+                                  expanded ? (
+                                    <FontAwesomeIcon
+                                      icon={faMinus}
+                                      className="w-4 h-4 mt-2 text-base"
+                                    />
+                                  ) : (
+                                    <FontAwesomeIcon
+                                      icon={faPlus}
+                                      className="w-4 h-4 mt-2 text-base"
+                                    />
+                                  )
+                                }
+                              </AccordionItemState>
+                            </div>
+                          </AccordionItemButton>
+                        </AccordionItemHeading>
+
+                        <AccordionItemPanel className="w-full px-6 pb-6 bg-white">
+                          <Accordion className={styles.accordion_2} allowZeroExpanded>
+                            {faculty?.subFaculty &&
+                              faculty?.subFaculty.length > 0 &&
+                              faculty?.subFaculty.map((mainSub) => (
+                                <AccordionItem>
+                                  <Link href={'/'}>
+                                    <a className="inline-block w-full px-0 py-2 font-normal text-left text-black">
+                                      {mainSub?.name}
+                                    </a>
+                                  </Link>
+                                  {mainSub?.subFaculty && mainSub?.subFaculty.length > 0 && (
+                                    <>
+                                      <AccordionItemHeading>
+                                        <AccordionItemButton
+                                          className={styles.accordion_subheading}
+                                        >
+                                          <div className="text-sm font-normal text-black">
+                                            {mainSub?.name}
+                                          </div>
+                                          <div className="flex justify-center w-auto px-1 py-0 text-red-400 border border-red-400">
+                                            <AccordionItemState>
+                                              {({ expanded }) =>
+                                                expanded ? (
+                                                  <FontAwesomeIcon
+                                                    icon={faMinus}
+                                                    className="w-2 text-base"
+                                                  />
+                                                ) : (
+                                                  <FontAwesomeIcon
+                                                    icon={faPlus}
+                                                    className="w-2 text-base"
+                                                  />
+                                                )
+                                              }
+                                            </AccordionItemState>
+                                          </div>
+                                        </AccordionItemButton>
+                                      </AccordionItemHeading>
+                                      <AccordionItemPanel className="px-4 py-1">
+                                        {mainSub?.subFaculty &&
+                                          mainSub?.subFaculty.length > 0 &&
+                                          mainSub?.subFaculty.map((subsubFaculty) => (
+                                            <Link href={'/'}>
+                                              <a className="inline-block px-4 py-2 font-normal text-left text-black">
+                                                {subsubFaculty?.name}
+                                              </a>
+                                            </Link>
+                                          ))}
+                                      </AccordionItemPanel>
+                                    </>
+                                  )}
+                                </AccordionItem>
+                              ))}
+                          </Accordion>
+                        </AccordionItemPanel>
+                      </AccordionItem>
+                    ))}
                 </div>
               </Accordion>
             </div>
 
-            <div className="relative mb-6 bg-white border border-gray-200">
-              <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                {/*<FontAwesomeIcon icon={faGraduationCap} className="w-6" /> */}
-                <span> Scholarships</span>
+            {data?.scholarship_detail && (
+              <div className="relative mb-6 bg-white border border-gray-200">
+                <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
+                  <span> Scholarships</span>
+                </div>
+                <div className="p-6">
+                  <ShowMoreText
+                    lines={8}
+                    more="Read more"
+                    less="Show less"
+                    className="text-justify"
+                    anchorClass="text-custom-primary font-normal"
+                    expanded={false}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data?.scholarship_detail,
+                      }}
+                    />
+                  </ShowMoreText>
+                </div>
               </div>
-              <div className="p-6">
-                <ShowMoreText
-                  /* Default options */
-                  lines={8}
-                  more="Read more"
-                  less="Show less"
-                  className="text-justify"
-                  anchorClass="text-custom-primary font-normal"
-                  expanded={false}
-                >
-                  <p>
-                    The American University of Cairo is Located in Cairo, Cairo Governorate. Cairo
-                    is the political and economic capital of Egypt. Cairo has a population of over
-                    10 million inhabitants. The population of Cairo is predominantly muslim and
-                    Cairo is the birth place of the Arab league. Cairo accounts for 10% of Egypt’s
-                    population and 22% of its economy. Cairo’s economy is largely based on
-                    government functions, trade, tourism
-                  </p>
-                </ShowMoreText>
-              </div>
-            </div>
+            )}
 
             <div className="relative mb-6 bg-white border border-gray-200">
               <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                {/*<FontAwesomeIcon icon={faMapMarkerAlt} className="w-4" />*/}
                 <span>Location</span>
               </div>
               <div className="p-6">
                 <ShowMoreText
-                  /* Default options */
                   lines={8}
                   more="Read more"
                   less="Show less"
@@ -859,14 +758,11 @@ const UniversityPage = (props) => {
                   anchorClass="text-custom-primary font-normal"
                   expanded={false}
                 >
-                  <p>
-                    The American University of Cairo is Located in Cairo, Cairo Governorate. Cairo
-                    is the political and economic capital of Egypt. Cairo has a population of over
-                    10 million inhabitants. The population of Cairo is predominantly muslim and
-                    Cairo is the birth place of the Arab league. Cairo accounts for 10% of Egypt’s
-                    population and 22% of its economy. Cairo’s economy is largely based on
-                    government functions, trade, tourism
-                  </p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data?.location_detail,
+                    }}
+                  />
                 </ShowMoreText>
               </div>
             </div>
@@ -874,7 +770,6 @@ const UniversityPage = (props) => {
             {isPremium && (
               <div className="relative mb-6 bg-white border border-gray-200">
                 <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                  {/*<FontAwesomeIcon icon={faMapMarkerAlt} className="w-4" />*/}
                   <span>Senior Officials</span>
                 </div>
                 <div className="py-6 md:p-6">
