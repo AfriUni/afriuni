@@ -1,13 +1,7 @@
 import React from 'react';
 
-
 const OthersMenu = () => {
-
-
-    return <>
-
-    menu others
-    </>
+    return <>menu others</>;
 };
 
 export default OthersMenu;

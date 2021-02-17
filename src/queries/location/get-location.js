@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
-import CountryFragment from "../fragments/country";
-import CourseFragment from "../fragments/course";
-import UniversityFragment from "../fragments/university";
+import CountryFragment from '../fragments/country';
+import CourseFragment from '../fragments/course';
+import UniversityFragment from '../fragments/university';
 
 export const GET_LOCATION_BY = gql`
-    query GET_LOCATION_BY ($id : ID!) {
+    query GET_LOCATION_BY($id: ID!) {
         location(id: $id, idType: SLUG) {
             ...CountryFragment
             flag
@@ -12,51 +12,51 @@ export const GET_LOCATION_BY = gql`
             total_courses
             total_universities
             studyLevel {
-              id
-              name
-              count
+                id
+                name
+                count
             }
             courses(first: 1000) {
-              nodes {
-                ...CourseFragment
-                specialisations(first: 1000) {
-                  nodes {
-                    id
-                    databaseId
-                    name
-                    slug
-                    parent {
-                      node {
-                        id
-                        databaseId
-                        name
-                      }
+                nodes {
+                    ...CourseFragment
+                    specialisations(first: 1000) {
+                        nodes {
+                            id
+                            databaseId
+                            name
+                            slug
+                            parent {
+                                node {
+                                    id
+                                    databaseId
+                                    name
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
             children(first: 1000) {
-              nodes {
-                ...CountryFragment
-                universities(first: 1000) {
-                  nodes {
-                    ...UniversityFragment
-                    course_count
-                    gallery
-                    schoolTypes(first: 1000) {
-                      nodes {
-                        id
-                        databaseId
-                        name
-                        slug
-                      }
+                nodes {
+                    ...CountryFragment
+                    universities(first: 1000) {
+                        nodes {
+                            ...UniversityFragment
+                            course_count
+                            gallery
+                            schoolTypes(first: 1000) {
+                                nodes {
+                                    id
+                                    databaseId
+                                    name
+                                    slug
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          }
+        }
     }
     ${CountryFragment}
     ${CourseFragment}

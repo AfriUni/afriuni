@@ -13,7 +13,7 @@
 
 html,
 body {
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     @apply bg-custom-body leading-relaxed font-light text-base;
 }
 
