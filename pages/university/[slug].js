@@ -47,6 +47,7 @@ import styles from '../../styles/globals.module.scss';
 // apollo
 import client from '../../src/apollo/client';
 import GET_UNIVERSITY from '../../src/queries/university/get-university';
+import GET_UNIVERSITY_SEARCH from '../../src/queries/university/get-search-university';
 
 const getLocationData = (nodes) => {
   const payload = {
@@ -59,7 +60,7 @@ const getLocationData = (nodes) => {
 
   payload.city = nodes.find((x) => !x.is_country)?.name;
   payload.country = nodes.find((x) => x.is_country)?.name;
-  payload.citySlug = nodes.find((x) => x.is_country)?.slug;
+  payload.countrySlug = nodes.find((x) => x.is_country)?.slug;
   payload.flag = nodes.find((x) => x.is_country)?.flag;
 
   return payload;
@@ -72,20 +73,34 @@ const UniversityPage = (props) => {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState({
     city: '',
-    citySlug: '',
+    countrySlug: '',
     country: '',
     flag: '',
   });
+  const [otherUniversities, setOtherUniversities] = useState(null);
 
   useEffect(() => {
     if (props.data?.data) {
-      //   const payload = props.data?.data?.university;
-      //   delete payload.__typename;
-      //   setData(payload);
       setData(props.data?.data?.university);
-      setLocation(getLocationData(data?.locations?.nodes));
+      setLocation(getLocationData(props.data?.data?.university?.locations?.nodes));
     }
   }, [props.data]);
+
+  useEffect(async () => {
+    if (location.countrySlug) {
+      console.log('working');
+      const data = await client.query({
+        query: GET_UNIVERSITY_SEARCH,
+        variables: {
+          search: location.countrySlug,
+        },
+      });
+
+      console.log('data', data);
+
+      if (data?.data) setOtherUniversities(data?.data?.universities?.nodes);
+    }
+  }, [location]);
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isCurrentMobile, setIsCurrentMobile] = React.useState(false);
@@ -200,8 +215,8 @@ const UniversityPage = (props) => {
               <a>Countries</a>
             </Link>
             <FontAwesomeIcon icon={faChevronRight} className="w-2" />
-            <Link href={`/country/${location.citySlug}`}>
-              <a>{location.city}</a>
+            <Link href={`/country/${location.countrySlug}`}>
+              <a>{location.country}</a>
             </Link>
             <FontAwesomeIcon icon={faChevronRight} className="hidden w-2 md:inline" />
             <span className="hidden md:inline">{data?.title}</span>
@@ -289,7 +304,10 @@ const UniversityPage = (props) => {
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center px-3 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4">
+                    <div
+                      className="flex items-center px-3 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
+                      onClick={() => window.open(data?.video_link, '_blank')}
+                    >
                       <FontAwesomeIcon icon={faPlayCircle} className="w-3 md:w-5" />{' '}
                       <span>Watch Video</span>
                     </div>
@@ -842,115 +860,41 @@ const UniversityPage = (props) => {
                   <span> Other Universities in Egypt</span>
                 </div>
                 <div className="p-4 md:p-6">
-                  <div className="pb-4">
-                    <div className="flex justify-between space-x-4">
-                      <div className="flex-none">
-                        <img
-                          src="../univAshesi.jpeg"
-                          alt=""
-                          className="object-cover h-full rounded-md w-28"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Link href="/university/pretoria">
-                          <a className="text-base font-normal leading-7 md:text-xl text-custom-primary truncate-2-lines max-h-13">
-                            Institut Universitaire de la Cote
-                          </a>
-                        </Link>
-                        <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                          <div className="flex items-center space-x-2">
-                            <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                            <span>Douala</span>
+                  {otherUniversities &&
+                    otherUniversities.map((uni) => (
+                      <div className="pb-4">
+                        <div className="flex justify-between space-x-4">
+                          <div className="flex-none">
+                            <img
+                              src={uni?.logo}
+                              alt=""
+                              className="object-cover h-full rounded-md w-28"
+                            />
                           </div>
-                          <div>30 Courses</div>
+                          <div className="flex-1">
+                            <Link href="/university/pretoria">
+                              <a className="text-base font-normal leading-7 md:text-xl text-custom-primary truncate-2-lines max-h-13">
+                                {uni?.title}
+                              </a>
+                            </Link>
+                            <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
+                              <div className="flex items-center space-x-2">
+                                <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
+                                <span>{uni?.address}</span>
+                              </div>
+                              <div>{uni?.course_count} Courses</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:mt-3 md:text-base">
+                          <div className="text-center w-28">
+                            {uni?.gallery ? uni?.gallery.length : 0} photos
+                          </div>
+                          <div className="text-xs italic text-gray-400">Featured</div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:mt-3 md:text-base">
-                      <div className="text-center w-28">10 photos</div>
-                      <div className="text-xs italic text-gray-400">Featured</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start py-3 border-t border-gray-400 md:py-5">
-                    <div className="w-1/12 pt-2 text-gray-400">
-                      <FontAwesomeIcon icon={faCircle} className="w-3" />
-                    </div>
-                    <div className="w-11/12">
-                      <Link href="/">
-                        <a className="text-lg font-normal leading-6 md:text-xl text-custom-primary truncate-2-lines max-h-12">
-                          Institut Universitaire de la Cote
-                        </a>
-                      </Link>
-                      <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                        <div>Public</div>
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                          <span>Douala</span>
-                        </div>
-                        <div>30 Courses</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start py-3 border-t border-gray-400 md:py-5">
-                    <div className="w-1/12 pt-2 text-gray-400">
-                      <FontAwesomeIcon icon={faCircle} className="w-3" />
-                    </div>
-                    <div className="w-11/12">
-                      <Link href="/">
-                        <a className="text-lg font-normal leading-6 md:text-xl text-custom-primary truncate-2-lines max-h-12">
-                          Institut Universitaire de la Cote
-                        </a>
-                      </Link>
-                      <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                        <div>Public</div>
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                          <span>Douala</span>
-                        </div>
-                        <div>30 Courses</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start py-3 border-t border-gray-400 md:py-5">
-                    <div className="w-1/12 pt-2 text-gray-400">
-                      <FontAwesomeIcon icon={faCircle} className="w-3" />
-                    </div>
-                    <div className="w-11/12">
-                      <Link href="/">
-                        <a className="text-lg font-normal leading-6 md:text-xl text-custom-primary truncate-2-lines max-h-12">
-                          Institut Universitaire de la Cote
-                        </a>
-                      </Link>
-                      <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                        <div>Public</div>
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                          <span>Douala</span>
-                        </div>
-                        <div>30 Courses</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-start py-3 border-t border-gray-400 md:py-5">
-                    <div className="w-1/12 pt-2 text-gray-400">
-                      <FontAwesomeIcon icon={faCircle} className="w-3" />
-                    </div>
-                    <div className="w-11/12">
-                      <Link href="/">
-                        <a className="text-lg font-normal leading-6 md:text-xl text-custom-primary truncate-2-lines max-h-12">
-                          Institut Universitaire de la Cote
-                        </a>
-                      </Link>
-                      <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                        <div>Public</div>
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                          <span>Douala</span>
-                        </div>
-                        <div>30 Courses</div>
-                      </div>
-                    </div>
-                  </div>
+                    ))}
+
                   <div className="flex justify-center mt-4">
                     <ButtonDefault className="flex items-center space-x-2 text-sm rounded-lg">
                       <FontAwesomeIcon icon={faChevronDown} className="w-4" />
