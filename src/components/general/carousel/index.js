@@ -1,3 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,202 +16,182 @@ Modal.setAppElement('#__next');
 Modal.defaultStyles.overlay.zIndex = '2000';
 Modal.defaultStyles.overlay.backgroundColor = '#0000004d';
 
-const Caroussel = props => {
-    const isMobile = useMediaQuery({ maxWidth: 767 });
-    const slideshow = React.useRef(null);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [currentSlide, setCurrentSlide] = React.useState(0);
-    const [initModalShow, setInitModalShow] = React.useState(null);
+const Caroussel = ({ images }) => {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const slideshow = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        pauseOnHover: false,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        autoplay: false,
-        swipeToSlide: true,
-        responsive: [
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    swipeToSlide: true,
-                },
-            },
-        ],
-    };
+  const [initModalShow, setInitModalShow] = React.useState(null);
 
-    const settingsModal = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        pauseOnHover: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: false,
-        swipeToSlide: true,
-    };
-
-    const defaultStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-            padding: '30px',
-            width: '80%',
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    pauseOnHover: false,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: false,
+    swipeToSlide: true,
+    responsive: [
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          swipeToSlide: true,
         },
-    };
-    const [customStyles, setCustomStyles] = React.useState(defaultStyles);
-    const [isScreenMobile, setIsScreenMobile] = React.useState(false);
+      },
+    ],
+  };
 
-    React.useEffect(() => {}, []);
+  const settingsModal = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    pauseOnHover: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    swipeToSlide: true,
+  };
 
-    const onClose = () => {
-        setIsOpen(!isOpen);
-    };
+  const defaultStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translate(-50%, -50%)',
+      padding: '30px',
+      width: '80%',
+    },
+  };
+  const [customStyles, setCustomStyles] = React.useState(defaultStyles);
+  const [isScreenMobile, setIsScreenMobile] = React.useState(false);
 
-    const onOpenModal = index => {
-        setIsOpen(!isOpen);
-        setInitModalShow(index);
-    };
+  React.useEffect(() => {}, []);
 
-    const onLeftClick = event => {
-        event.preventDefault();
-        slideshow.current.slickPrev();
-    };
+  const onClose = () => {
+    setIsOpen(!isOpen);
+  };
 
-    const onRightClick = event => {
-        event.preventDefault();
-        slideshow.current.slickNext();
-    };
+  const onOpenModal = (index) => {
+    setIsOpen(!isOpen);
+    setInitModalShow(index);
+  };
 
-    React.useEffect(() => {
-        if (isMobile) {
-            const styles = {
-                content: {
-                    top: '50%',
-                    left: '50%',
-                    right: 'auto',
-                    bottom: 'auto',
-                    transform: 'translate(-50%, -50%)',
-                    paddingTop: '0px',
-                    paddingBottom: '0px',
-                    paddingLeft: '0px',
-                    paddingRight: '0px',
-                    width: '100%',
-                    height: '100%',
-                },
-            };
+  const onLeftClick = (event) => {
+    event.preventDefault();
+    slideshow.current.slickPrev();
+  };
 
-            setCustomStyles(styles);
-            setIsScreenMobile(true);
-        } else {
-            setCustomStyles(defaultStyles);
-            setIsScreenMobile(false);
-        }
-    }, [isMobile]);
+  const onRightClick = (event) => {
+    event.preventDefault();
+    slideshow.current.slickNext();
+  };
 
-    return (
-        <div className="relative">
-            <Slider {...settings} ref={slideshow} className="overflow-hidden">
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(1)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
+  React.useEffect(() => {
+    if (isMobile) {
+      const styles = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          transform: 'translate(-50%, -50%)',
+          paddingTop: '0px',
+          paddingBottom: '0px',
+          paddingLeft: '0px',
+          paddingRight: '0px',
+          width: '100%',
+          height: '100%',
+        },
+      };
 
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(2)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
+      setCustomStyles(styles);
+      setIsScreenMobile(true);
+    } else {
+      setCustomStyles(defaultStyles);
+      setIsScreenMobile(false);
+    }
+  }, [isMobile]);
 
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(3)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
-
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(4)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
-
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(5)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
-
-                <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" onClick={() => onOpenModal(6)}>
-                    <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-full" />
-                </div>
-            </Slider>
-
-            <div className="absolute left-0 bottom-0 top-0 hidden md:flex items-center justify-between">
-                <a
-                    className="text-white md:ml-2 bg-black hover:bg-opacity-25 md:p-4 flex items-center p-2 ml-2 rounded-full hover:text-white"
-                    href="#"
-                    onClick={event => onLeftClick(event)}
-                >
-                    <FontAwesomeIcon icon={faChevronLeft} className="md:h-4 md:w-4 w-4 h-4 fill-current block" />{' '}
-                </a>
-            </div>
-            <div className="absolute right-0 top-0 bottom-0 hidden md:flex items-center justify-between">
-                <a
-                    className="text-white md:mr-2 bg-black hover:bg-opacity-25 md:p-4 flex items-center p-2 mr-2 rounded-full hover:text-white"
-                    href="#"
-                    onClick={event => onRightClick(event)}
-                >
-                    <FontAwesomeIcon icon={faChevronRight} className="md:h-4 md:w-4 w-4 h-4 fill-current block" />{' '}
-                </a>
-            </div>
-
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={onClose}
-                style={customStyles}
-                contentLabel={'title modal'}
-                shouldCloseOnOverlayClick={false}
-                shouldCloseOnEsc={false}
-                bodyOpenClassName="modal"
+  return (
+    <div className="relative">
+      <Slider {...settings} ref={slideshow} className="overflow-hidden">
+        {images &&
+          images.length > 0 &&
+          images.map((img, index) => (
+            <div
+              className="relative px-1 pt-2 outline-none cursor-pointer md:px-2 focus:outline-none"
+              onClick={() => onOpenModal(index)}
             >
-                <div className="relative h-full w-full">
-                    <div className="mb-5 md:p-0 p-4 relative">
-                        <button onClick={onClose} className="absolute text-xs right-0 top-0 bottom-0 flex rounded-xl items-center py-2 px-3">
-                            <FontAwesomeIcon icon={faTimes} className="h-3 h-3 text-custom-primary mr-2" />
-                        </button>
-                        <h2 className="text-xl font-semibold mt-2 mb-4">Gallery of american university</h2>
-                        <hr />
-                    </div>
+              <img src={img} alt="" className="object-contain w-full h-full" />
+            </div>
+          ))}
+      </Slider>
 
-                    <div className="h-miniscreen overflow-hidden">
-                        <Slider {...settingsModal} initialSlide={initModalShow} className="overflow-hidden">
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
+      <div className="absolute top-0 bottom-0 left-0 items-center justify-between hidden md:flex">
+        <a
+          className="flex items-center p-2 ml-2 text-white bg-black rounded-full md:ml-2 hover:bg-opacity-25 md:p-4 hover:text-white"
+          href="#"
+          onClick={(event) => onLeftClick(event)}
+        >
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            className="block w-4 h-4 fill-current md:h-4 md:w-4"
+          />{' '}
+        </a>
+      </div>
+      <div className="absolute top-0 bottom-0 right-0 items-center justify-between hidden md:flex">
+        <a
+          className="flex items-center p-2 mr-2 text-white bg-black rounded-full md:mr-2 hover:bg-opacity-25 md:p-4 hover:text-white"
+          href="#"
+          onClick={(event) => onRightClick(event)}
+        >
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            className="block w-4 h-4 fill-current md:h-4 md:w-4"
+          />
+        </a>
+      </div>
 
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onClose}
+        style={customStyles}
+        contentLabel={'title modal'}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEsc={false}
+        bodyOpenClassName="modal"
+      >
+        <div className="relative w-full h-full">
+          <div className="relative p-4 mb-5 md:p-0">
+            <button
+              onClick={onClose}
+              className="absolute top-0 bottom-0 right-0 flex items-center px-3 py-2 text-xs rounded-xl"
+            >
+              <FontAwesomeIcon icon={faTimes} className="h-3 mr-2 text-custom-primary" />
+            </button>
+            <h2 className="mt-2 mb-4 text-xl font-semibold">Gallery of american university</h2>
+            <hr />
+          </div>
 
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
-
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
-
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
-
-                            <div className="relative px-1 md:px-2 pt-2 outline-none focus:outline-none">
-                                <img src="../slider/gallery.jpg" alt="" className="object-contain w-full h-miniscreen" />
-                            </div>
-                        </Slider>
-                    </div>
-                </div>
-            </Modal>
+          <div className="overflow-hidden h-miniscreen">
+            <Slider {...settingsModal} initialSlide={initModalShow} className="overflow-hidden">
+              {images &&
+                images.length > 0 &&
+                images.map((img) => (
+                  <div className="relative px-1 pt-2 outline-none md:px-2 focus:outline-none">
+                    <img src={img} alt="" className="object-contain w-full h-miniscreen" />
+                  </div>
+                ))}
+            </Slider>
+          </div>
         </div>
-    );
+      </Modal>
+    </div>
+  );
 };
 
 export default Caroussel;

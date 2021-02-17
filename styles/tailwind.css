@@ -13,16 +13,16 @@
 
 html,
 body {
-    font-family: 'Roboto', sans-serif !important;
-    @apply bg-custom-menu text-custom-body leading-relaxed font-light text-base;
+  font-family: 'Roboto', sans-serif !important;
+  @apply bg-custom-menu text-custom-body leading-relaxed font-light text-base;
 }
 
 .modal {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .modal .ReactModal__Content {
-    @apply rounded-none !important;
+  @apply rounded-none !important;
 }
 
 /*html {*/

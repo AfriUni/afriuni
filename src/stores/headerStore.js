@@ -10,29 +10,29 @@ enableStaticRendering(true);
 configure({ enforceActions: 'observed' });
 
 class HeaderStore {
-    getCategories = async () => {
-        const { data, loading, networkStatus } = await client.query({
-            query: GET_CATEGORIE,
-        });
+  getCategories = async () => {
+    const { data, loading, networkStatus } = await client.query({
+      query: GET_CATEGORIE,
+    });
 
-        return {
-            loading,
-            networkStatus,
-            data: data.categories.nodes,
-        };
+    return {
+      loading,
+      networkStatus,
+      data: data.categories.nodes,
     };
+  };
 
-    getLocation = async () => {
-        const { data, loading, networkStatus } = await client.query({
-            query: GET_COUNTRIES,
-        });
+  getLocation = async () => {
+    const { data, loading, networkStatus } = await client.query({
+      query: GET_COUNTRIES,
+    });
 
-        return {
-            loading,
-            networkStatus,
-            data: data.countries.nodes,
-        };
+    return {
+      loading,
+      networkStatus,
+      data: data.countries.nodes,
     };
+  };
 }
 
 export default HeaderStore;

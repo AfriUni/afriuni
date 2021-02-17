@@ -4,9 +4,9 @@ import HeaderStore from './headerStore';
 enableStaticRendering(true);
 
 class RootStore {
-    constructor() {
-        this.header = new HeaderStore();
-    }
+  constructor() {
+    this.header = new HeaderStore();
+  }
 }
 
 const Stores = new RootStore();
