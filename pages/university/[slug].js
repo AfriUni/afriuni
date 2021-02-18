@@ -33,14 +33,13 @@ import ShowMoreText from 'react-show-more-text';
 
 // components
 import Caroussel from '../../src/components/general/carousel';
-import Dropdown, { ItemDropdown } from '../../src/components/general/dropdown';
 import {
   Button,
   ButtonDefault,
   ButtonRedSecondary,
 } from '../../src/components/styleComponent/button';
-import DropdownMulti from '../../src/components/general/dropdownMulti';
 import OfficialSection from '../../src/components/sections/university/official';
+import UniversityCoursesCard from '../../src/components/cards/universityCoursesCard';
 
 import styles from '../../styles/globals.module.scss';
 
@@ -49,22 +48,8 @@ import client from '../../src/apollo/client';
 import GET_UNIVERSITY from '../../src/queries/university/get-university';
 import GET_UNIVERSITY_SEARCH from '../../src/queries/university/get-search-university';
 
-const getLocationData = (nodes) => {
-  const payload = {
-    city: '',
-    country: '',
-    flag: '',
-  };
-
-  if (!nodes) return payload;
-
-  payload.city = nodes.find((x) => !x.is_country)?.name;
-  payload.country = nodes.find((x) => x.is_country)?.name;
-  payload.countrySlug = nodes.find((x) => x.is_country)?.slug;
-  payload.flag = nodes.find((x) => x.is_country)?.flag;
-
-  return payload;
-};
+// utils
+import { getLocationData } from '../../src/utils/universityUtils';
 
 const UniversityPage = (props) => {
   const router = useRouter();
@@ -88,23 +73,19 @@ const UniversityPage = (props) => {
 
   useEffect(async () => {
     if (location.countrySlug) {
-      console.log('working');
-      const data = await client.query({
+      const queryData = await client.query({
         query: GET_UNIVERSITY_SEARCH,
         variables: {
           search: location.countrySlug,
         },
       });
 
-      console.log('data', data);
-
-      if (data?.data) setOtherUniversities(data?.data?.universities?.nodes);
+      if (queryData?.data) setOtherUniversities(queryData?.data?.universities?.nodes);
     }
   }, [location]);
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isCurrentMobile, setIsCurrentMobile] = React.useState(false);
-  const [listData, setListData] = React.useState([]);
 
   React.useEffect(() => {
     if (isMobile) {
@@ -117,86 +98,6 @@ const UniversityPage = (props) => {
   React.useEffect(() => {
     if (router.query?.q) setIsPremium(true);
   }, [router.query]);
-
-  React.useEffect(() => {
-    const list = [
-      {
-        name: 'Ingenierie',
-        subMenu: [
-          {
-            name: 'subcategory',
-          },
-          {
-            name: 'subcategory',
-          },
-          {
-            name: 'subcategory',
-          },
-          {
-            name: 'subcategory',
-          },
-          {
-            name: 'subcategory',
-          },
-          {
-            name: 'subcategory',
-          },
-        ],
-      },
-      {
-        name: 'Information Technology',
-        subMenu: [
-          {
-            name: 'subcategory 2',
-          },
-          {
-            name: 'subcategory 2',
-          },
-          {
-            name: 'subcategory 2',
-          },
-          {
-            name: 'subcategory 2',
-          },
-          {
-            name: 'subcategory 2',
-          },
-          {
-            name: 'subcategory 2',
-          },
-        ],
-      },
-      {
-        name: 'Science',
-        subMenu: [
-          {
-            name: 'subcategory 3',
-          },
-          {
-            name: 'subcategory 3',
-          },
-          {
-            name: 'subcategory 3',
-          },
-          {
-            name: 'subcategory 3',
-          },
-          {
-            name: 'subcategory 3',
-          },
-          {
-            name: 'subcategory 3',
-          },
-        ],
-      },
-    ];
-
-    // const content = "The American University of Cairo is Located in Cairo, Cairo Governorate. Cairo is the political and economic capital of Egypt. Cairo has a population of over 10 million inhabitants. The population of Cairo is predominantly muslim and Cairo is the birth place of the Arab league. Cairo accounts for 10% of Egypt’s population and 22% of its economy. Cairo’s economy is largely based on government functions, trade, tourism";
-    //
-    // console.log(content.length);
-
-    setListData(list);
-  }, []);
 
   return (
     <div>
@@ -287,7 +188,7 @@ const UniversityPage = (props) => {
                   </div>
                   <div className="hidden md:block">
                     <div className="p-1 border border-gray-200 rounded-xl">
-                      <img src={data?.logo} alt="" className="object-contain" />
+                      <img src={data?.logo} alt="" className="object-contain w-32 h-full" />
                     </div>
                   </div>
                 </div>
@@ -413,210 +314,11 @@ const UniversityPage = (props) => {
               <Caroussel images={data?.gallery} />
             </div>
 
-            <div className="relative mb-6 bg-white border border-gray-200">
-              <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                {/*<FontAwesomeIcon icon={faBookOpen} className="w-6" /> */}
-                <span>Study Programmes ({data?.course_count})</span>
-              </div>
-              <div className="p-4 md:p-6">
-                <div className="flex items-center space-x-6">
-                  <div className="w-1/2 md:w-1/3">
-                    <DropdownMulti
-                      title={'Courses Catégories'}
-                      className="flex items-center justify-between pl-3 text-xs font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
-                      maxHeight="100%"
-                      classChevron="ml-4 md:p-4 px-2 py-3 bg-custom-primary text-white"
-                      classDropdown="mt-1 rounded-md shadow-lg md:w-700 w-300"
-                      position="center"
-                      data={listData}
-                    />
-                  </div>
-                  <div className="w-1/2 md:w-1/3">
-                    <Dropdown
-                      title={'Study Level'}
-                      className="flex items-center justify-between pl-3 text-xs font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
-                      maxHeight="250px"
-                      classChevron="ml-4 md:p-4 px-2 py-3 bg-custom-primary text-white"
-                      classDropdown="mt-1 rounded-md shadow-lg"
-                      position="center"
-                    >
-                      <ItemDropdown
-                        value={'Country'}
-                        classInactive="font-medium text-custom-primary"
-                      >
-                        All Study Level
-                      </ItemDropdown>
-                      <ItemDropdown value={'Cameroon'} classInactive="text-custom-primary">
-                        Cameroon
-                      </ItemDropdown>
-                      <ItemDropdown value={'South Africa'} classInactive="text-custom-primary">
-                        South Africa
-                      </ItemDropdown>
-                      <ItemDropdown value={'France'} classInactive="text-custom-primary">
-                        France
-                      </ItemDropdown>
-                    </Dropdown>
-                  </div>
-                  <div className="hidden md:block md:w-1/3">
-                    <Dropdown
-                      title={'Durations'}
-                      className="flex items-center justify-between pl-2 text-sm font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
-                      maxHeight="250px"
-                      classChevron="md:p-4 p-3 bg-custom-primary text-white"
-                      classDropdown="mt-1 rounded-md shadow-lg"
-                      position="center"
-                    >
-                      <ItemDropdown
-                        value={'Country'}
-                        classInactive="font-medium text-custom-primary"
-                      >
-                        All Durations
-                      </ItemDropdown>
-                      <ItemDropdown value={'Cameroon'} classInactive="text-custom-primary">
-                        Cameroon
-                      </ItemDropdown>
-                      <ItemDropdown value={'South Africa'} classInactive="text-custom-primary">
-                        South Africa
-                      </ItemDropdown>
-                      <ItemDropdown value={'France'} classInactive="text-custom-primary">
-                        France
-                      </ItemDropdown>
-                    </Dropdown>
-                  </div>
-                </div>
-              </div>
-              <div className="m-3 md:m-6">
-                <table className="min-w-full">
-                  {!isCurrentMobile && (
-                    <thead className="text-xl font-normal text-gray-400 uppercase">
-                      <tr>
-                        <td className="hidden md:table-cell">Programmes</td>
-                        <td className="hidden md:table-cell">Study Level</td>
-                        <td className="hidden text-right md:table-cell">Duration</td>
-                      </tr>
-                    </thead>
-                  )}
-                  <tbody>
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-                      >
-                        Agriculture
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-                      >
-                        Agriculture
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-2 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-                      >
-                        Agriculture
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                        Agronomy - BSc
-                      </td>
-                      <td className="hidden md:table-cell">Bachelor's</td>
-                      <td className="hidden text-right md:table-cell">4 years</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="flex justify-center my-4">
-                <ButtonDefault className="flex items-center space-x-2 text-sm rounded-lg">
-                  <FontAwesomeIcon icon={faChevronDown} className="w-3" />
-                  <span>Show More</span>
-                </ButtonDefault>
-              </div>
-            </div>
+            <UniversityCoursesCard
+              count={data?.course_count}
+              title={data?.title}
+              isCurrentMobile={isCurrentMobile}
+            />
 
             <div className="relative mb-6 bg-white border border-gray-200">
               <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
@@ -683,20 +385,13 @@ const UniversityPage = (props) => {
                               faculty?.subFaculty.length > 0 &&
                               faculty?.subFaculty.map((mainSub) => (
                                 <AccordionItem>
-                                  <Link href={'/'}>
-                                    <a className="inline-block w-full px-0 py-2 font-normal text-left text-black">
-                                      {mainSub?.name}
-                                    </a>
-                                  </Link>
-                                  {mainSub?.subFaculty && mainSub?.subFaculty.length > 0 && (
-                                    <>
-                                      <AccordionItemHeading>
-                                        <AccordionItemButton
-                                          className={styles.accordion_subheading}
-                                        >
-                                          <div className="text-sm font-normal text-black">
-                                            {mainSub?.name}
-                                          </div>
+                                  <>
+                                    <AccordionItemHeading>
+                                      <AccordionItemButton className={styles.accordion_subheading}>
+                                        <div className="text-sm font-normal text-black">
+                                          {mainSub?.name}
+                                        </div>
+                                        {mainSub?.subFaculty && mainSub?.subFaculty.length > 0 && (
                                           <div className="flex justify-center w-auto px-1 py-0 text-red-400 border border-red-400">
                                             <AccordionItemState>
                                               {({ expanded }) =>
@@ -714,21 +409,21 @@ const UniversityPage = (props) => {
                                               }
                                             </AccordionItemState>
                                           </div>
-                                        </AccordionItemButton>
-                                      </AccordionItemHeading>
-                                      <AccordionItemPanel className="px-4 py-1">
-                                        {mainSub?.subFaculty &&
-                                          mainSub?.subFaculty.length > 0 &&
-                                          mainSub?.subFaculty.map((subsubFaculty) => (
-                                            <Link href={'/'}>
-                                              <a className="inline-block px-4 py-2 font-normal text-left text-black">
-                                                {subsubFaculty?.name}
-                                              </a>
-                                            </Link>
-                                          ))}
-                                      </AccordionItemPanel>
-                                    </>
-                                  )}
+                                        )}
+                                      </AccordionItemButton>
+                                    </AccordionItemHeading>
+                                    <AccordionItemPanel className="px-4 py-1">
+                                      {mainSub?.subFaculty &&
+                                        mainSub?.subFaculty.length > 0 &&
+                                        mainSub?.subFaculty.map((subsubFaculty) => (
+                                          <Link href={'/'}>
+                                            <a className="inline-block px-4 py-2 font-normal text-left text-black">
+                                              {subsubFaculty?.name}
+                                            </a>
+                                          </Link>
+                                        ))}
+                                    </AccordionItemPanel>
+                                  </>
                                 </AccordionItem>
                               ))}
                           </Accordion>
