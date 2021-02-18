@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,7 +15,7 @@ import client from '../../apollo/client';
 import GET_UNIVERSITY_COURSES from '../../queries/university/get-uni-courses';
 
 // utils
-import { getLocationData } from '../../utils/universityUtils';
+import { getCategoryList, getDurationList, getStudyLvlList } from '../../utils/universityUtils';
 
 const list = [
   {
@@ -69,6 +69,10 @@ const list = [
 const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
   const [courses, setCourses] = useState(null);
 
+  const categories = useMemo(() => getCategoryList(courses), [courses]);
+  const durationList = useMemo(() => getDurationList(courses), [courses]);
+  const studyLevelList = useMemo(() => getStudyLvlList(courses), [courses]);
+
   useEffect(async () => {
     if (title) {
       const queryData = await client.query({
@@ -102,48 +106,43 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
           </div>
           <div className="w-1/2 md:w-1/3">
             <Dropdown
-              title={'Study Level'}
+              title="Study Level"
               className="flex items-center justify-between pl-3 text-xs font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
               maxHeight="250px"
               classChevron="ml-4 md:p-4 px-2 py-3 bg-custom-primary text-white"
               classDropdown="mt-1 rounded-md shadow-lg"
               position="center"
             >
-              <ItemDropdown value={'Country'} classInactive="font-medium text-custom-primary">
+              <ItemDropdown value="" classInactive="font-medium text-custom-primary">
                 All Study Level
               </ItemDropdown>
-              <ItemDropdown value={'Cameroon'} classInactive="text-custom-primary">
-                Cameroon
-              </ItemDropdown>
-              <ItemDropdown value={'South Africa'} classInactive="text-custom-primary">
-                South Africa
-              </ItemDropdown>
-              <ItemDropdown value={'France'} classInactive="text-custom-primary">
-                France
-              </ItemDropdown>
+              {studyLevelList &&
+                studyLevelList.length > 0 &&
+                studyLevelList.map((lvl) => (
+                  <ItemDropdown key={lvl} value={lvl} classInactive="text-custom-primary">
+                    {lvl}
+                  </ItemDropdown>
+                ))}
             </Dropdown>
           </div>
           <div className="hidden md:block md:w-1/3">
             <Dropdown
-              title={'Durations'}
+              title="Durations"
               className="flex items-center justify-between pl-2 text-sm font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
               maxHeight="250px"
               classChevron="md:p-4 p-3 bg-custom-primary text-white"
               classDropdown="mt-1 rounded-md shadow-lg"
               position="center"
             >
-              <ItemDropdown value={'Country'} classInactive="font-medium text-custom-primary">
+              <ItemDropdown value="" classInactive="font-medium text-custom-primary">
                 All Durations
               </ItemDropdown>
-              <ItemDropdown value={'Cameroon'} classInactive="text-custom-primary">
-                Cameroon
-              </ItemDropdown>
-              <ItemDropdown value={'South Africa'} classInactive="text-custom-primary">
-                South Africa
-              </ItemDropdown>
-              <ItemDropdown value={'France'} classInactive="text-custom-primary">
-                France
-              </ItemDropdown>
+              {durationList &&
+                durationList.map((duration) => (
+                  <ItemDropdown key={duration} value={duration} classInactive="text-custom-primary">
+                    {duration}
+                  </ItemDropdown>
+                ))}
             </Dropdown>
           </div>
         </div>
