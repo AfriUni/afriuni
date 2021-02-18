@@ -17,6 +17,7 @@ import {
   faPlus,
   faShare,
   faThumbsUp,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Accordion,
@@ -30,6 +31,12 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import ShowMoreText from 'react-show-more-text';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#__next');
+
+Modal.defaultStyles.overlay.zIndex = '2000';
+Modal.defaultStyles.overlay.backgroundColor = '#0000004d';
 
 // components
 import Caroussel from '../../src/components/general/carousel';
@@ -51,8 +58,40 @@ import GET_UNIVERSITY_SEARCH from '../../src/queries/university/get-search-unive
 // utils
 import { getLocationData } from '../../src/utils/universityUtils';
 
+const defaultStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    padding: '30px',
+    width: '50%',
+    display: 'grid',
+    placeItems: 'center',
+  },
+};
+
+const mobileStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    paddingTop: '0px',
+    paddingBottom: '0px',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    width: '100%',
+    height: '100%',
+  },
+};
+
 const UniversityPage = (props) => {
   const router = useRouter();
+
+  const [customStyles, setCustomStyles] = React.useState(defaultStyles);
   const [isPremium, setIsPremium] = React.useState(false);
 
   const [data, setData] = useState(null);
@@ -63,6 +102,11 @@ const UniversityPage = (props) => {
     flag: '',
   });
   const [otherUniversities, setOtherUniversities] = useState(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const onClose = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     if (props.data?.data) {
@@ -90,6 +134,7 @@ const UniversityPage = (props) => {
   React.useEffect(() => {
     if (isMobile) {
       setIsCurrentMobile(true);
+      setCustomStyles(mobileStyles);
     } else {
       setIsCurrentMobile(false);
     }
@@ -159,7 +204,7 @@ const UniversityPage = (props) => {
                     <div>
                       <div
                         className="flex items-center px-2 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
-                        onClick={() => window.open(data?.video_link, '_blank')}
+                        onClick={() => setIsOpen(true)}
                       >
                         <FontAwesomeIcon icon={faPlayCircle} className="w-3 md:w-5" />{' '}
                         <span>Watch Video</span>
@@ -207,7 +252,7 @@ const UniversityPage = (props) => {
                   <div>
                     <div
                       className="flex items-center px-3 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
-                      onClick={() => window.open(data?.video_link, '_blank')}
+                      onClick={() => setIsOpen(true)}
                     >
                       <FontAwesomeIcon icon={faPlayCircle} className="w-3 md:w-5" />{' '}
                       <span>Watch Video</span>
@@ -693,6 +738,34 @@ const UniversityPage = (props) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onClose}
+        style={customStyles}
+        contentLabel={'title modal'}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEsc={false}
+        bodyOpenClassName="modal"
+      >
+        <div className="relative w-full h-full">
+          <div className="relative p-4 mb-5 md:p-0">
+            <button
+              onClick={onClose}
+              className="absolute top-0 bottom-0 right-0 flex items-center px-3 py-2 text-xs rounded-xl"
+            >
+              <FontAwesomeIcon icon={faTimes} className="h-3 mr-2 text-custom-primary" />
+            </button>
+            <h2 className="mt-2 mb-4 text-xl font-semibold">{data?.title}</h2>
+            <hr />
+          </div>
+          {data?.video_link ? (
+            <iframe width="100%" height="450" src={data?.video_link}></iframe>
+          ) : (
+            <p>No Video attached</p>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };
