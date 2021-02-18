@@ -9,6 +9,11 @@ const query = gql`
         specialisations {
           nodes {
             name
+            ancestors {
+              nodes {
+                name
+              }
+            }
           }
         }
         duration_time {

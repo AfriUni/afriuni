@@ -15,56 +15,12 @@ import client from '../../apollo/client';
 import GET_UNIVERSITY_COURSES from '../../queries/university/get-uni-courses';
 
 // utils
-import { getCategoryList, getDurationList, getStudyLvlList } from '../../utils/universityUtils';
-
-const list = [
-  {
-    name: 'Ingenierie',
-    subMenu: [
-      {
-        name: 'subcategory',
-      },
-      {
-        name: 'subcategory',
-      },
-      {
-        name: 'subcategory',
-      },
-      {
-        name: 'subcategory',
-      },
-      {
-        name: 'subcategory',
-      },
-      {
-        name: 'subcategory',
-      },
-    ],
-  },
-  {
-    name: 'Information Technology',
-    subMenu: [
-      {
-        name: 'subcategory 2',
-      },
-      {
-        name: 'subcategory 2',
-      },
-      {
-        name: 'subcategory 2',
-      },
-      {
-        name: 'subcategory 2',
-      },
-      {
-        name: 'subcategory 2',
-      },
-      {
-        name: 'subcategory 2',
-      },
-    ],
-  },
-];
+import {
+  getCategoryList,
+  getDurationList,
+  getStudyLvlList,
+  getTableData,
+} from '../../utils/universityUtils';
 
 const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
   const [courses, setCourses] = useState(null);
@@ -72,6 +28,7 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
   const categories = useMemo(() => getCategoryList(courses), [courses]);
   const durationList = useMemo(() => getDurationList(courses), [courses]);
   const studyLevelList = useMemo(() => getStudyLvlList(courses), [courses]);
+  const [header, body] = useMemo(() => getTableData(courses), [courses]);
 
   useEffect(async () => {
     if (title) {
@@ -101,7 +58,7 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
               classChevron="ml-4 md:p-4 px-2 py-3 bg-custom-primary text-white"
               classDropdown="mt-1 rounded-md shadow-lg md:w-700 w-300"
               position="center"
-              data={list}
+              data={categories || []}
             />
           </div>
           <div className="w-1/2 md:w-1/3">
@@ -119,7 +76,7 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
               {studyLevelList &&
                 studyLevelList.length > 0 &&
                 studyLevelList.map((lvl) => (
-                  <ItemDropdown key={lvl} value={lvl} classInactive="text-custom-primary">
+                  <ItemDropdown value={lvl} classInactive="text-custom-primary">
                     {lvl}
                   </ItemDropdown>
                 ))}
@@ -139,7 +96,7 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
               </ItemDropdown>
               {durationList &&
                 durationList.map((duration) => (
-                  <ItemDropdown key={duration} value={duration} classInactive="text-custom-primary">
+                  <ItemDropdown value={duration} classInactive="text-custom-primary">
                     {duration}
                   </ItemDropdown>
                 ))}
@@ -152,123 +109,34 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
           {!isCurrentMobile && (
             <thead className="text-xl font-normal text-gray-400 uppercase">
               <tr>
-                <td className="hidden md:table-cell">Programmes</td>
-                <td className="hidden md:table-cell">Study Level</td>
-                <td className="hidden text-right md:table-cell">Duration</td>
+                {header &&
+                  header.map((heading) => (
+                    <td className="hidden md:table-cell">{heading.value}</td>
+                  ))}
               </tr>
             </thead>
           )}
           <tbody>
-            <tr>
-              <td
-                colSpan={3}
-                className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-              >
-                Agriculture
-              </td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-
-            <tr>
-              <td
-                colSpan={3}
-                className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-              >
-                Agriculture
-              </td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-
-            <tr>
-              <td
-                colSpan={3}
-                className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
-              >
-                Agriculture
-              </td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
-            <tr>
-              <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
-                Agronomy - BSc
-              </td>
-              <td className="hidden md:table-cell">Bachelor's</td>
-              <td className="hidden text-right md:table-cell">4 years</td>
-            </tr>
+            {body &&
+              body.map((row) => (
+                <tr>
+                  {row.isHeading ? (
+                    <td
+                      colSpan={header.length}
+                      className="pt-4 pb-3 text-xl font-normal text-black md:text-2xl md:pt-6"
+                    >
+                      {row.programme}
+                    </td>
+                  ) : (
+                    header &&
+                    header.map((heading) => (
+                      <td className="py-1 pl-5 font-normal md:text-lg text-custom-primary">
+                        {row[heading.key]}
+                      </td>
+                    ))
+                  )}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

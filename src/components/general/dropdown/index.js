@@ -19,17 +19,20 @@ const Dropdown = ({
   const container = React.useRef('');
 
   const childrenElement = React.Children.map(children, (child, index) => {
-    return React.cloneElement(child, {
-      index,
-      isActive: currentIndex === index,
-      onChangeTitle: (e, href, title, value) => {
-        if (href === '#') e.preventDefault();
-        setCurrentTitle(title);
-        setCurrentIndex(index);
-        setIsOpen(false);
-        if (onChange) onChange(value);
-      },
-    });
+    return (
+      child &&
+      React.cloneElement(child, {
+        index,
+        isActive: currentIndex === index,
+        onChangeTitle: (e, href, title, value) => {
+          if (href === '#') e.preventDefault();
+          setCurrentTitle(title);
+          setCurrentIndex(index);
+          setIsOpen(false);
+          if (onChange) onChange(value);
+        },
+      })
+    );
   });
 
   React.useEffect(() => {
@@ -66,13 +69,13 @@ const Dropdown = ({
       <div className={className} onClick={openDropdown}>
         <span>{currentTitle}</span>{' '}
         <div className={classChevron}>
-          <FontAwesomeIcon icon={faChevronDown} className="h-3 w-3" />
+          <FontAwesomeIcon icon={faChevronDown} className="w-3 h-3" />
         </div>
       </div>
 
       {isOpen && (
         <div className={`absolute z-20 ${initPosition} ${classDropdown}`}>
-          <div className="rounded-md bg-white shadow-xs">
+          <div className="bg-white rounded-md shadow-xs">
             <div
               className="py-1 overflow-y-auto"
               style={{ maxHeight: maxHeight }}
