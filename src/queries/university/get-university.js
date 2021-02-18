@@ -49,6 +49,11 @@ const GET_UNIVERSITY = gql`
         }
       }
       location_detail
+      contacts {
+        emails
+        name
+        post
+      }
     }
   }
 `;

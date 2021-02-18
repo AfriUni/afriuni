@@ -6,6 +6,7 @@ const GET_UNIVERSITY_SEARCH = gql`
       nodes {
         title
         address
+        databaseId
         course_count
         logo
         gallery

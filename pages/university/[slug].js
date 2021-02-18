@@ -47,6 +47,7 @@ import {
 } from '../../src/components/styleComponent/button';
 import OfficialSection from '../../src/components/sections/university/official';
 import UniversityCoursesCard from '../../src/components/cards/universityCoursesCard';
+import SimilarUniversityCard from '../../src/components/cards/similaruniversityCard';
 
 import styles from '../../styles/globals.module.scss';
 
@@ -569,35 +570,29 @@ const UniversityPage = (props) => {
                 <span> Contact this University</span>
               </div>
               <div className="p-6 space-y-5">
-                <div>
-                  <div className="text-xl font-normal text-black">Admissions Office</div>
-                  <div className="py-3 text-gray-400">
-                    {' '}
-                    Responsible for Admission & Application Enquiries
-                  </div>
-                  <ButtonRedSecondary className="flex items-center space-x-2 rounded-lg">
-                    <FontAwesomeIcon icon={faEnvelope} className="w-6" />{' '}
-                    <span>Send a Message</span>
-                  </ButtonRedSecondary>
-                </div>
-                <div>
-                  <div className="text-xl font-normal text-black">Admissions Office</div>
-                  <div className="py-3 text-gray-400">
-                    {' '}
-                    Responsible for Admission & Application Enquiries
-                  </div>
-                  <ButtonRedSecondary className="flex items-center space-x-2 rounded-lg">
-                    <FontAwesomeIcon icon={faEnvelope} className="w-6" />{' '}
-                    <span>Send a Message</span>
-                  </ButtonRedSecondary>
-                </div>
+                {data?.contacts &&
+                  data?.contacts.map((contact) => (
+                    <div>
+                      <div className="text-xl font-normal text-black">{contact.name}</div>
+                      <div className="py-3 text-gray-400"> {contact.post}</div>
+                      <ButtonRedSecondary
+                        onClick={() =>
+                          contact.emails ? (window.location = `mailto:${contact.emails[0]}`) : {}
+                        }
+                        className="flex items-center space-x-2 rounded-lg"
+                      >
+                        <FontAwesomeIcon icon={faEnvelope} className="w-6" />{' '}
+                        <span>Send a Message</span>
+                      </ButtonRedSecondary>
+                    </div>
+                  ))}
               </div>
             </div>
 
             {!isPremium ? (
               <div className="relative mb-6 bg-white border border-gray-200">
                 <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                  <span> Other Universities in Egypt</span>
+                  <span> Other Universities in {location.country}</span>
                 </div>
                 <div className="p-4 md:p-6">
                   {otherUniversities &&
@@ -612,7 +607,7 @@ const UniversityPage = (props) => {
                             />
                           </div>
                           <div className="flex-1">
-                            <Link href="/university/pretoria">
+                            <Link href={`/university/${uni.databaseId}`}>
                               <a className="text-base font-normal leading-7 md:text-xl text-custom-primary truncate-2-lines max-h-13">
                                 {uni?.title}
                               </a>
@@ -683,58 +678,9 @@ const UniversityPage = (props) => {
               </div>
             )}
 
-            <div className="relative mb-6 bg-white border border-gray-200">
-              <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
-                <span> Similar Universities</span>
-              </div>
-              <div className="px-4 py-2 md:p-6">
-                <div className="flex justify-between space-x-4">
-                  <div className="flex-1">
-                    <Link href="/university/pretoria">
-                      <a className="font-normal leading-7 text-black md:text-xl truncate-2-lines max-h-13">
-                        Institut Universitaire de la Cote
-                      </a>
-                    </Link>
-                    <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                      <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                        <span>Johannesburg, South Africa</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-none">
-                    <img
-                      src="../univAshesi.jpeg"
-                      alt=""
-                      className="object-cover h-full rounded-md w-28"
-                    />
-                  </div>
-                </div>
-                <hr className="my-4 md:my-6" />
-                <div className="flex justify-between space-x-4">
-                  <div className="flex-1">
-                    <Link href="/university/pretoria">
-                      <a className="font-normal leading-7 text-black md:text-xl truncate-2-lines max-h-13">
-                        Institut Universitaire de la Cote
-                      </a>
-                    </Link>
-                    <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
-                      <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                        <span>Johannesburg, South Africa</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-none">
-                    <img
-                      src="../univAshesi.jpeg"
-                      alt=""
-                      className="object-cover h-full rounded-md w-28"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SimilarUniversityCard
+              type={data?.schoolTypes?.nodes && data?.schoolTypes.nodes[0].name}
+            />
           </div>
         </div>
       </div>
