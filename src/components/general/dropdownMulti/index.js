@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +15,7 @@ const DropdownMulti = ({
   position = 'right',
   maxHeight = '',
   data = [],
+  handleChange = () => {},
 }) => {
   const [initPosition, setInitPosition] = React.useState('origin-top-right right-0');
   const [isOpen, setIsOpen] = React.useState(false);
@@ -30,6 +34,10 @@ const DropdownMulti = ({
     if (position === 'left') setInitPosition('origin-top-left left-0');
     if (position === 'center') setInitPosition('origin-center left-0 right-0');
   }, [position]);
+
+  React.useEffect(() => {
+    if (currentTitle) handleChange(currentTitle);
+  }, [currentTitle]);
 
   React.useEffect(() => {
     window.addEventListener('click', addBackDrop);
@@ -91,23 +99,23 @@ const DropdownMulti = ({
   return (
     <div className="relative" ref={container}>
       <div className={className} onClick={openDropdown}>
-        {currentTitle}{' '}
+        {currentTitle}
         <div className={classChevron}>
-          <FontAwesomeIcon icon={faChevronDown} className="h-3 w-3" />
+          <FontAwesomeIcon icon={faChevronDown} className="w-3 h-3" />
         </div>
       </div>
 
       {isOpen && (
         <div className={`absolute z-20 ${initPosition} ${classDropdown}`}>
-          <div className="rounded-md bg-white shadow-xs">
+          <div className="bg-white rounded-md shadow-xs">
             <div
-              className="overflow-y-auto p-4"
+              className="p-4 overflow-y-auto"
               style={{ maxHeight: maxHeight }}
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              <div className="mb-4 pb-2 flex justify-between items-center border-b border-gray-400 md:text-base text-sm">
+              <div className="flex items-center justify-between pb-2 mb-4 text-sm border-b border-gray-400 md:text-base">
                 <div className={`text-custom-primary_2 ${clickedTab ? 'hidden' : ''}`}>
                   <span>{title}</span>
                 </div>
@@ -120,7 +128,7 @@ const DropdownMulti = ({
                   <FontAwesomeIcon icon={faChevronLeft} className="w-2" />{' '}
                   <span>{currentParent}</span>
                 </div>
-                <span className="md:text-sm text-xs text-black cursor-pointer" onClick={resetTab}>
+                <span className="text-xs text-black cursor-pointer md:text-sm" onClick={resetTab}>
                   Reset
                 </span>
               </div>
@@ -130,47 +138,41 @@ const DropdownMulti = ({
                     !clickedTab ? 'grid' : 'hidden'
                   } md:grid-cols-4 grid-cols-2 md:gap-2 gap-3`}
                 >
-                  {currentData.map((data, index) => {
-                    return (
-                      <Tab
-                        className={`text-xs md:text-sm font-normal hover:text-custom-secondary cursor-pointer`}
-                        key={index}
-                        selectedClassName={`text-custom-secondary focus:outline-none`}
-                      >
-                        <h3 className="">{data.name}</h3>
-                      </Tab>
-                    );
-                  })}
+                  {currentData.map((data, index) => (
+                    <Tab
+                      className="text-xs font-normal cursor-pointer md:text-sm hover:text-custom-secondary"
+                      key={index}
+                      selectedClassName="text-custom-secondary focus:outline-none"
+                    >
+                      <h3 className="">{data.name}</h3>
+                    </Tab>
+                  ))}
                 </TabList>
                 <div className={`bg-white ${clickedTab ? 'block' : 'hidden'}`}>
-                  {currentData.map((data, indexP) => {
-                    return (
-                      <TabPanel
-                        className="opacity-0"
-                        selectedClassName="opacity-100 bg-white"
-                        key={indexP}
-                      >
-                        <div className="grid md:grid-cols-4 grid-cols-2 md:gap-2 gap-3 text-xs md:text-sm">
-                          {data.subMenu.map((sub, index) => {
-                            return (
-                              <Link href="#" key={index}>
-                                <a
-                                  className={`font-light hover:text-custom-secondary block ${
-                                    index === currentIndexLink && currentIndexTab === indexP
-                                      ? 'text-custom-secondary'
-                                      : ''
-                                  }`}
-                                  onClick={(e) => onSelectSubTab(e, index, sub.name)}
-                                >
-                                  {sub.name}
-                                </a>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </TabPanel>
-                    );
-                  })}
+                  {currentData.map((data, indexP) => (
+                    <TabPanel
+                      className="opacity-0"
+                      selectedClassName="opacity-100 bg-white"
+                      key={indexP}
+                    >
+                      <div className="grid grid-cols-2 gap-3 text-xs md:grid-cols-4 md:gap-2 md:text-sm">
+                        {data.subMenu.map((sub, index) => (
+                          <Link href="#" key={index}>
+                            <a
+                              className={`font-light hover:text-custom-secondary block ${
+                                index === currentIndexLink && currentIndexTab === indexP
+                                  ? 'text-custom-secondary'
+                                  : ''
+                              }`}
+                              onClick={(e) => onSelectSubTab(e, index, sub.name)}
+                            >
+                              {sub.name}
+                            </a>
+                          </Link>
+                        ))}
+                      </div>
+                    </TabPanel>
+                  ))}
                 </div>
               </Tabs>
             </div>

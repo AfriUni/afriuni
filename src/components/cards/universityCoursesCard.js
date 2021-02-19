@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable nonblock-statement-body-position */
+/* eslint-disable linebreak-style */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -20,15 +23,53 @@ import {
   getDurationList,
   getStudyLvlList,
   getTableData,
+  filterTableData,
 } from '../../utils/universityUtils';
+
+const CATEGORY_DEFAULT = 'Courses Catégories';
+const DURATION_DEFAULT = 'All Durations';
+const STUDY_LVL_DEFAULT = 'All Study Level';
 
 const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
   const [courses, setCourses] = useState(null);
+
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORY_DEFAULT);
+  const [duration, setDuration] = useState(DURATION_DEFAULT);
+  const [studyLevel, setStudyLevel] = useState(STUDY_LVL_DEFAULT);
 
   const categories = useMemo(() => getCategoryList(courses), [courses]);
   const durationList = useMemo(() => getDurationList(courses), [courses]);
   const studyLevelList = useMemo(() => getStudyLvlList(courses), [courses]);
   const [header, body] = useMemo(() => getTableData(courses), [courses]);
+
+  const [filteredTable, setFilteredTable] = useState([]);
+
+  useEffect(() => {
+    if (
+      selectedCategory === CATEGORY_DEFAULT &&
+      duration === DURATION_DEFAULT &&
+      studyLevel === STUDY_LVL_DEFAULT
+    ) {
+      setFilteredTable(body);
+    } else if (
+      selectedCategory !== CATEGORY_DEFAULT ||
+      duration !== DURATION_DEFAULT ||
+      studyLevel !== STUDY_LVL_DEFAULT
+    ) {
+      const filteredData = filterTableData({
+        body,
+        category: selectedCategory,
+        duration,
+        studyLevel,
+        defaultState: {
+          category: CATEGORY_DEFAULT,
+          duration: DURATION_DEFAULT,
+          studyLevel: STUDY_LVL_DEFAULT,
+        },
+      });
+      setFilteredTable(filteredData);
+    }
+  }, [selectedCategory, duration, studyLevel, body]);
 
   useEffect(async () => {
     if (title) {
@@ -59,18 +100,23 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
               classDropdown="mt-1 rounded-md shadow-lg md:w-700 w-300"
               position="center"
               data={categories || []}
+              handleChange={(e) => setSelectedCategory(e)}
             />
           </div>
           <div className="w-1/2 md:w-1/3">
             <Dropdown
-              title="Study Level"
+              title={studyLevel}
+              onChange={(e) => setStudyLevel(e)}
               className="flex items-center justify-between pl-3 text-xs font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
               maxHeight="250px"
               classChevron="ml-4 md:p-4 px-2 py-3 bg-custom-primary text-white"
               classDropdown="mt-1 rounded-md shadow-lg"
               position="center"
             >
-              <ItemDropdown value="" classInactive="font-medium text-custom-primary">
+              <ItemDropdown
+                value={STUDY_LVL_DEFAULT}
+                classInactive="font-medium text-custom-primary"
+              >
                 All Study Level
               </ItemDropdown>
               {studyLevelList &&
@@ -84,14 +130,18 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
           </div>
           <div className="hidden md:block md:w-1/3">
             <Dropdown
-              title="Durations"
+              title={duration}
+              onChange={(e) => setDuration(e)}
               className="flex items-center justify-between pl-2 text-sm font-normal text-black truncate bg-gray-200 rounded-lg md:pl-4 md:text-base"
               maxHeight="250px"
               classChevron="md:p-4 p-3 bg-custom-primary text-white"
               classDropdown="mt-1 rounded-md shadow-lg"
               position="center"
             >
-              <ItemDropdown value="" classInactive="font-medium text-custom-primary">
+              <ItemDropdown
+                value={DURATION_DEFAULT}
+                classInactive="font-medium text-custom-primary"
+              >
                 All Durations
               </ItemDropdown>
               {durationList &&
@@ -117,8 +167,8 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
             </thead>
           )}
           <tbody>
-            {body &&
-              body.map((row) => (
+            {filteredTable &&
+              filteredTable.map((row) => (
                 <tr>
                   {row.isHeading ? (
                     <td

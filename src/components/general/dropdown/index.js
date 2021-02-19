@@ -26,7 +26,7 @@ const Dropdown = ({
         isActive: currentIndex === index,
         onChangeTitle: (e, href, title, value) => {
           if (href === '#') e.preventDefault();
-          setCurrentTitle(title);
+          setCurrentTitle(value);
           setCurrentIndex(index);
           setIsOpen(false);
           if (onChange) onChange(value);

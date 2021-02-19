@@ -1,3 +1,5 @@
+/* eslint-disable nonblock-statement-body-position */
+/* eslint-disable implicit-arrow-linebreak */
 export const getLocationData = (nodes) => {
   const payload = {
     city: '',
@@ -148,4 +150,33 @@ export const getTableData = (courses) => {
   });
 
   return [header, body];
+};
+
+export const multiFilter = (arr, filters) => {
+  const filterKeys = Object.keys(filters);
+  return arr.filter((eachObj) =>
+    filterKeys.every((eachKey) => {
+      if (!filters[eachKey].length) {
+        return true; // passing an empty filter means that filter is ignored.
+      }
+      return eachObj[eachKey].includes(filters[eachKey]);
+    }),
+  );
+};
+
+export const filterTableData = ({ body, category, duration, studyLevel, defaultState }) => {
+  if (
+    category === defaultState.category &&
+    duration === defaultState.duration &&
+    studyLevel === defaultState.studyLevel
+  )
+    return body;
+
+  const filters = {
+    programme: category === defaultState.category ? '' : category,
+    studyLevel: studyLevel === defaultState.studyLevel ? '' : studyLevel,
+    duration: duration === defaultState.duration ? '' : duration,
+  };
+
+  return multiFilter(body, filters);
 };
