@@ -145,8 +145,23 @@ const UniversityPage = (props) => {
     if (router.query?.q) setIsPremium(true);
   }, [router.query]);
 
+  const shareuniversity = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${data?.title} on AfriUni`,
+          text: `Check out detailed information about ${data?.title} on Afriuni.com`,
+          url: 'https://afriuni.com/',
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      console.log('Not supported 🙅‍');
+    }
+  };
+
   return (
-    <div>
+    <div className="university_page">
       <Head>
         <title>{data?.seo?.title}</title>
       </Head>
@@ -198,7 +213,10 @@ const UniversityPage = (props) => {
                       </div>
                     </div>
                     <div>
-                      <div className="flex items-center px-2 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4">
+                      <div
+                        onClick={() => shareuniversity()}
+                        className="flex items-center px-2 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
+                      >
                         <FontAwesomeIcon icon={faShare} className="w-3 md:w-5" /> <span>Share</span>
                       </div>
                     </div>
@@ -246,7 +264,10 @@ const UniversityPage = (props) => {
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center px-4 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4">
+                    <div
+                      onClick={() => shareuniversity()}
+                      className="flex items-center px-4 py-2 space-x-2 text-xs text-black bg-gray-200 rounded-lg cursor-pointer hover:bg-red-200 hover:text-red-600 md:text-base md:px-4"
+                    >
                       <FontAwesomeIcon icon={faShare} className="w-3 md:w-5" /> <span>Share</span>
                     </div>
                   </div>
