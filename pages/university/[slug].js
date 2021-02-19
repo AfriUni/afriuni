@@ -291,22 +291,36 @@ const UniversityPage = (props) => {
             )}
 
             <div className="grid grid-cols-4 gap-1 md:gap-2">
-              <div className="flex items-center justify-center px-2 py-2 text-center bg-white border-t border-l border-r border-gray-200 cursor-pointer md:px-4 md:py-3 rounded-t-xl">
-                <span className="font-normal text-red-400 md:text-lg">Overview</span>
-              </div>
-              <div className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3">
-                <span className="text-xs font-normal text-black md:text-base">Courses (75)</span>
-              </div>
-              <div className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3">
-                <span className="text-xs font-normal text-black md:text-base">Admission</span>
-              </div>
-              <div className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3">
-                <span className="text-xs font-normal text-black md:text-base">
-                  Faculties <span className="hidden md:inline"> & Departments</span>
-                </span>
-              </div>
+              <Link href={`/university/${props.slug}#overview`}>
+                <div className="flex items-center justify-center px-2 py-2 text-center bg-white border-t border-l border-r border-gray-200 cursor-pointer md:px-4 md:py-3 rounded-t-xl">
+                  <span className="font-normal text-red-400 md:text-lg">Overview</span>
+                </div>
+              </Link>
+              <Link href={`/university/${props.slug}#courses`}>
+                <div
+                  href={`/university/${props.slug}#courses`}
+                  className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3"
+                >
+                  <span className="text-xs font-normal text-black md:text-base">Courses (75)</span>
+                </div>
+              </Link>
+              <Link href={`/university/${props.slug}#admission`}>
+                <div className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3">
+                  <span className="text-xs font-normal text-black md:text-base">Admission</span>
+                </div>
+              </Link>
+              <Link href={`/university/${props.slug}#faculties`}>
+                <div className="flex items-center justify-center px-2 py-2 text-center bg-opacity-25 cursor-pointer md:px-4 md:py-3 rounded-t-xl bg-custom-primary_3">
+                  <span className="text-xs font-normal text-black md:text-base">
+                    Faculties <span className="hidden md:inline"> & Departments</span>
+                  </span>
+                </div>
+              </Link>
             </div>
-            <div className="p-0 mb-0 border border-gray-200 md:bg-white md:p-8 md:mb-6">
+            <div
+              className="p-0 mb-0 border border-gray-200 md:bg-white md:p-8 md:mb-6"
+              id="overview"
+            >
               <div className="grid grid-cols-1 divide-gray-200 md:grid-cols-3 md:divide-x">
                 <div className="col-span-2 p-6 mb-4 bg-white border border-gray-200 md:bg-transparent md:p-0 md:border-0 md:mb-0">
                   <div className="text-justify md:pr-6">
@@ -381,13 +395,15 @@ const UniversityPage = (props) => {
               <Caroussel images={data?.gallery} />
             </div>
 
-            <UniversityCoursesCard
-              count={data?.course_count}
-              title={data?.title}
-              isCurrentMobile={isCurrentMobile}
-            />
+            <div id="courses">
+              <UniversityCoursesCard
+                count={data?.course_count}
+                title={data?.title}
+                isCurrentMobile={isCurrentMobile}
+              />
+            </div>
 
-            <div className="relative mb-6 bg-white border border-gray-200">
+            <div id="admission" className="relative mb-6 bg-white border border-gray-200">
               <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal border-b border-gray-200 border-dotted md:p-4 md:text-2xl text-custom-secondary">
                 <span>Admission</span>
               </div>
@@ -412,7 +428,10 @@ const UniversityPage = (props) => {
               </div>
             </div>
 
-            <div className="flex items-center px-4 py-2 space-x-3 text-xl font-normal text-black border-b border-gray-200 border-dotted md:p-4 md:text-2xl">
+            <div
+              id="faculties"
+              className="flex items-center px-4 py-2 space-x-3 text-xl font-normal text-black border-b border-gray-200 border-dotted md:p-4 md:text-2xl"
+            >
               <span>Faculties & Departments</span>
             </div>
 
@@ -762,7 +781,7 @@ export async function getStaticProps({ params }) {
 
   // Pass post data to the page via props
   return {
-    props: { data },
+    props: { data, slug: params.slug },
     // Re-generate the post at most once per second
     // if a request comes in
     revalidate: 1,
