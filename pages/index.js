@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import SlideShowSection from "../src/components/sections/home/slideShow";
-import AboutSection from "../src/components/sections/home/about";
-import FieldStudySection from "../src/components/sections/home/fieldStudy";
-import DestinationSection from "../src/components/sections/home/destination";
-import FeaturedCoursesSection from "../src/components/general/featuredCourses";
-import FeaturedUniversitySection from "../src/components/sections/home/featuredUniversity";
-import client from "../src/apollo/client";
-import {GET_CATEGORIE} from "../src/queries/get-categories";
-import {GET_COUNTRIES} from "../src/queries/get-countries";
-import {GET_FEATURED_COURSE} from "../src/queries/home/get-featuredCourses";
-import {GET_FEATURED_UNIVERSITY} from "../src/queries/home/get-featuredUniversities";
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import SlideShowSection from '../src/components/sections/home/slideShow';
+import AboutSection from '../src/components/sections/home/about';
+import FieldStudySection from '../src/components/sections/home/fieldStudy';
+import DestinationSection from '../src/components/sections/home/destination';
+import FeaturedCoursesSection from '../src/components/general/featuredCourses';
+import FeaturedUniversitySection from '../src/components/sections/home/featuredUniversity';
+import client from '../src/apollo/client';
+import { GET_CATEGORIE } from '../src/queries/get-categories';
+import { GET_COUNTRIES } from '../src/queries/get-countries';
+import { GET_FEATURED_COURSE } from '../src/queries/home/get-featuredCourses';
+import { GET_FEATURED_UNIVERSITY } from '../src/queries/home/get-featuredUniversities';
 
 export default function Home(props) {
   return (
@@ -19,25 +19,28 @@ export default function Home(props) {
         <title>Create Next App</title>
       </Head>
 
-        <SlideShowSection data={props.slider.data}/>
-        <AboutSection/>
-        <FieldStudySection data={props.fieldStudy.data}/>
-        <DestinationSection data={props.destination.data}/>
-        <FeaturedCoursesSection title="Interesting Courses" titleClassName="text-2xl md:text-5xl" sectionClassName="pt-8 md:pt-16 pb-12 md:pb-32" data={props.featuredCourse.data}/>
-        <FeaturedUniversitySection data={props.featuredUniversity.data}/>
-
+      <SlideShowSection data={props.slider.data} />
+      <AboutSection />
+      <FieldStudySection data={props.fieldStudy.data} />
+      <DestinationSection data={props.destination.data} />
+      <FeaturedCoursesSection
+        title="Interesting Courses"
+        titleClassName="text-2xl md:text-5xl"
+        sectionClassName="pt-8 md:pt-16 pb-12 md:pb-32"
+        data={props.featuredCourse.data}
+      />
+      <FeaturedUniversitySection data={props.featuredUniversity.data} />
     </div>
-  )
+  );
 }
 
-export async function getStaticProps (context){
-
+export async function getStaticProps(context) {
   const destination = await client.query({
-    query : GET_COUNTRIES
+    query: GET_COUNTRIES,
   });
 
   const fieldStudy = await client.query({
-    query : GET_CATEGORIE
+    query: GET_CATEGORIE,
   });
 
   let today = new Date();
@@ -48,36 +51,36 @@ export async function getStaticProps (context){
   today = yyyy + '/' + mm + '/' + dd;
 
   const featuredCourse = await client.query({
-    query : GET_FEATURED_COURSE,
+    query: GET_FEATURED_COURSE,
     variables: {
-      type: "home",
-      start_date : today
+      type: 'home',
+      start_date: today,
     },
   });
 
   const featuredUniversity = await client.query({
-    query : GET_FEATURED_UNIVERSITY,
+    query: GET_FEATURED_UNIVERSITY,
     variables: {
-      type: "home",
-      start_date : today
+      type: 'home',
+      start_date: today,
     },
   });
 
   const slider = await client.query({
-    query : GET_FEATURED_UNIVERSITY,
+    query: GET_FEATURED_UNIVERSITY,
     variables: {
-      type: "slider"
+      type: 'slider',
     },
   });
 
   return {
-    props : {
+    props: {
       fieldStudy,
       destination,
       featuredCourse,
       featuredUniversity,
-      slider
+      slider,
     },
-    revalidate: 1
-  }
+    revalidate: 1,
+  };
 }

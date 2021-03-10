@@ -8,7 +8,8 @@
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "prod": "next start -p $PORT",
     "lint": "eslint ./src/components/** ./pages/** -c .eslintrc.json --ext js,jsx",
-    "lint-fix": "eslint ./src/components/** ./pages/** -c .eslintrc.json --fix --ext js,jsx"
+    "lint-fix": "eslint ./src/components/** ./pages/** -c .eslintrc.json --fix --ext js,jsx",
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",

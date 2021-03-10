@@ -1,22 +1,21 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-indent */
 import React from 'react';
-import Link from "next/link";
-import Image from 'next/image'
+import Link from 'next/link';
 
-const HomeFieldStudyCard = (props) => {
-
-    return <div className={"flex-1 flex justify-center bg-white shadow-xl p-3 md:p-6 rounded-xl"}>
-        <Link href={`/disciplines/${props.slug}`}>
-            <a className={"flex items-center flex-col space-y-4 relative"}>
-             <div className="relative">
-                 <img className="w-full h-16 md:h-40 object-cover" src={props.image}  alt={props.title} />
-             </div>
-                <div className="font-bold text-sm md:text-2xl text-center break-words">
-                    {props.title}
-                </div>
-
-            </a>
-        </Link>
-    </div>
-};
+const HomeFieldStudyCard = (props) => (
+  <div className="flex justify-center flex-1 p-3 bg-white shadow-xl md:p-6 rounded-xl">
+    <Link href={`/discipline/${props.slug}`}>
+      <a className="relative flex flex-col items-center space-y-4">
+        <div className="relative">
+          <img className="object-cover w-full h-16 md:h-40" src={props.image} alt={props.title} />
+        </div>
+        <div className="text-sm font-bold text-center break-words md:text-2xl">{props.title}</div>
+      </a>
+    </Link>
+  </div>
+);
 
 export default HomeFieldStudyCard;
