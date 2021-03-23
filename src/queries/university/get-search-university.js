@@ -10,6 +10,14 @@ const GET_UNIVERSITY_SEARCH = gql`
         course_count
         logo
         gallery
+        locations {
+            nodes {
+              name
+              is_country
+              flag
+              slug
+            }
+        }
         featuredImage {
           node {
             link

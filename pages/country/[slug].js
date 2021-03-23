@@ -125,22 +125,31 @@ const CountryPage = (props) => {
           if (cat.parent) {
             if (!category.includes(cat.parent.node.id)) {
               category.push(cat.parent.node.id);
-              const currentCourse = [];
-              currentCourse.push(item);
-              listCourses.push({ ...cat.parent.node, courses: currentCourse });
+
+              const currentSubCatID = [];
+              const subCat = [];
+
+              currentSubCatID.push(cat.id);
+              subCat.push(cat);
+
+              listCourses.push({ ...cat.parent.node, currentSubCatID, subCat });
             } else {
+
               const index = category.indexOf(cat.parent.node.id);
-              listCourses[index].courses.push(item);
+              const currentCatList = listCourses[index];
+
+              if(!currentCatList.currentSubCatID.includes(cat.id)){
+                currentCatList.currentSubCatID.push(cat.id);
+                currentCatList.subCat.push(cat)
+              }
+
             }
           } else {
             if (!category.includes(cat.id)) {
               category.push(cat.id);
-              const currentCourse = [];
-              currentCourse.push(item);
-              listCourses.push({ ...cat, courses: currentCourse });
-            } else {
-              const index = category.indexOf(cat.id);
-              listCourses[index].courses.push(item);
+              const currentSubCatID = [];
+              const subCat = [];
+              listCourses.push({ ...cat, currentSubCatID, subCat });
             }
           }
         });
@@ -536,7 +545,7 @@ const CountryPage = (props) => {
                         <AccordionItemHeading>
                           <AccordionItemButton className={styles.accordion_heading}>
                             <div className="text-base md:text-xl capitalize">
-                              {item.name.toLowerCase()} ({item.courses.length})
+                              {item.name.toLowerCase()} ({item.subCat.length})
                             </div>
                             <div className="px-6 md:py-4 py-3 w-auto flex justify-center">
                               <AccordionItemState>
@@ -559,11 +568,11 @@ const CountryPage = (props) => {
                         </AccordionItemHeading>
                         <AccordionItemPanel className="px-8 md:py-5 py-3">
                           <ul className="list-disc leading-relaxed space-y-2 list-inside font-light text-sm md:text-base">
-                            {item.courses.sort(compareCourses).map((course, i) => {
+                            {item.subCat.sort(compareSpecialisation).map((subcat, i) => {
                               return (
                                 <li key={i}>
-                                  <Link href={`/course/${course.databaseId}/${course.slug}`}>
-                                    <a>{course.title}</a>
+                                  <Link href={`/search`}>
+                                    <a>{subcat.name}</a>
                                   </Link>
                                 </li>
                               );

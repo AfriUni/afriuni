@@ -16,7 +16,7 @@ Modal.setAppElement('#__next');
 Modal.defaultStyles.overlay.zIndex = '2000';
 Modal.defaultStyles.overlay.backgroundColor = '#0000004d';
 
-const Caroussel = ({ images }) => {
+const Carousel = ({ images }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const slideshow = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -194,4 +194,4 @@ const Caroussel = ({ images }) => {
   );
 };
 
-export default Caroussel;
+export default Carousel;

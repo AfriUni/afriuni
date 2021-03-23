@@ -15,7 +15,7 @@ const HomeFeaturedUniversityCard = (props) => (
           <img src={props.data.logo} alt="" className="w-10 h-10 md:h-14 md:w-12" />
         </div>
       </div>
-      <Link href={`/university/${props.data.databaseId}`}>
+      <Link href={`/university/${props.data.slug}`}>
         <a className="flex-1 block h-8 mb-2 text-sm font-medium leading-4 text-custom-primary md:text-2xl md:my-2 truncate-2-lines md:h-20 md:leading-7">
           {props.data.title}
         </a>

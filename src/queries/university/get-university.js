@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const GET_UNIVERSITY = gql`
-  query GET_UNIVERSITY($id: ID!) {
-    university(id: $id, idType: DATABASE_ID) {
+   query GET_UNIVERSITY($id: ID!) {
+    university(id: $id, idType: SLUG) {
       seo {
         title
       }
@@ -17,6 +17,22 @@ const GET_UNIVERSITY = gql`
       website_url
       course_count
       number_student
+      undergraduate_fees_max {
+          currency
+          tuition_fees
+      }
+      undergraduate_fees_min {
+          currency
+          tuition_fees
+      }
+      postgraduate_fees_max {
+          currency
+          tuition_fees
+      }
+      postgraduate_fees_min {
+          currency
+          tuition_fees
+      }
       schoolTypes {
         nodes {
           name

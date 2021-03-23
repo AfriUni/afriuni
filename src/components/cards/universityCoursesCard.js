@@ -121,8 +121,8 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
               </ItemDropdown>
               {studyLevelList &&
                 studyLevelList.length > 0 &&
-                studyLevelList.map((lvl) => (
-                  <ItemDropdown value={lvl} classInactive="text-custom-primary">
+                studyLevelList.map((lvl, i) => (
+                  <ItemDropdown value={lvl} classInactive="text-custom-primary" key={i}>
                     {lvl}
                   </ItemDropdown>
                 ))}
@@ -145,8 +145,8 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
                 All Durations
               </ItemDropdown>
               {durationList &&
-                durationList.map((duration) => (
-                  <ItemDropdown value={duration} classInactive="text-custom-primary">
+                durationList.map((duration, i) => (
+                  <ItemDropdown value={duration} classInactive="text-custom-primary" key={i}>
                     {duration}
                   </ItemDropdown>
                 ))}
@@ -160,16 +160,16 @@ const UniversityCoursesCard = ({ count, title, isCurrentMobile }) => {
             <thead className="text-xl font-normal text-gray-400 uppercase">
               <tr>
                 {header &&
-                  header.map((heading) => (
-                    <td className="hidden md:table-cell">{heading.value}</td>
+                  header.map((heading, i) => (
+                    <td className="hidden md:table-cell" key={i}>{heading.value}</td>
                   ))}
               </tr>
             </thead>
           )}
           <tbody>
             {filteredTable &&
-              filteredTable.map((row) => (
-                <tr>
+              filteredTable.map((row, i) => (
+                <tr key={i}>
                   {row.isHeading ? (
                     <td
                       colSpan={header.length}

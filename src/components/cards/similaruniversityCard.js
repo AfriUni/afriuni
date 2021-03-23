@@ -34,11 +34,11 @@ const SimilarUniversityCard = ({ type }) => {
       </div>
       <div className="px-4 py-2 md:p-6">
         {universities &&
-          universities.map((uni) => (
-            <>
+          universities.map((uni, i) => (
+            <div key={i}>
               <div className="flex justify-between space-x-4">
                 <div className="flex-1">
-                  <Link href={`/university/${uni.databaseId}`}>
+                  <Link href={`/university/${uni.slug}`}>
                     <a className="font-normal leading-7 text-black md:text-xl truncate-2-lines max-h-13">
                       {uni.title}
                     </a>
@@ -59,7 +59,7 @@ const SimilarUniversityCard = ({ type }) => {
                 </div>
               </div>
               <hr className="my-4 md:my-6" />{' '}
-            </>
+            </div>
           ))}
       </div>
     </div>

@@ -39,7 +39,7 @@ Modal.defaultStyles.overlay.zIndex = '2000';
 Modal.defaultStyles.overlay.backgroundColor = '#0000004d';
 
 // components
-import Caroussel from '../../src/components/general/carousel';
+import Carousel from '../../src/components/general/carousel';
 import {
   Button,
   ButtonDefault,
@@ -159,6 +159,8 @@ const UniversityPage = (props) => {
       console.log('Not supported 🙅‍');
     }
   };
+
+  if (!data) return <div>Loading</div>;
 
   return (
     <div className="university_page">
@@ -340,6 +342,7 @@ const UniversityPage = (props) => {
                     </ShowMoreText>
                   </div>
                 </div>
+                {console.log(data)}
                 <div className="col-span-1 p-4 bg-white border border-gray-200 md:p-0 md:border-0">
                   <div className="pl-2 space-y-2 md:pl-6">
                     <div className="flex items-start space-x-1 text-base">
@@ -392,7 +395,7 @@ const UniversityPage = (props) => {
               </div>
             </div>
             <div className="p-0 mb-4 bg-white border border-gray-200 md:p-6 md:mb-6">
-              <Caroussel images={data?.gallery} />
+              <Carousel images={data?.gallery} />
             </div>
 
             <div id="courses">
@@ -622,7 +625,7 @@ const UniversityPage = (props) => {
                         className="flex items-center space-x-2 rounded-lg"
                       >
                         <FontAwesomeIcon icon={faEnvelope} className="w-6" />{' '}
-                        <span>Send a Message</span>
+                        <span>Send a message</span>
                       </ButtonRedSecondary>
                     </div>
                   ))}
@@ -643,11 +646,11 @@ const UniversityPage = (props) => {
                             <img
                               src={uni?.logo}
                               alt=""
-                              className="object-cover h-full rounded-md w-28"
+                              className="h-20 rounded-md w-20"
                             />
                           </div>
-                          <div className="flex-1">
-                            <Link href={`/university/${uni.databaseId}`}>
+                          <div className="flex-1 flex flex-col justify-between">
+                            <Link href={`/university/${uni.slug}`}>
                               <a className="text-base font-normal leading-7 md:text-xl text-custom-primary truncate-2-lines max-h-13">
                                 {uni?.title}
                               </a>
@@ -655,14 +658,14 @@ const UniversityPage = (props) => {
                             <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:text-base">
                               <div className="flex items-center space-x-2">
                                 <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" />{' '}
-                                <span>{uni?.address}</span>
+                                <span>{getLocationData(uni?.locations.nodes).country}</span>
                               </div>
                               <div>{uni?.course_count} Courses</div>
                             </div>
                           </div>
                         </div>
                         <div className="flex items-center justify-between mt-2 text-sm text-gray-600 md:mt-3 md:text-base">
-                          <div className="text-center w-28">
+                          <div className="text-center w-20">
                             {uni?.gallery ? uni?.gallery.length : 0} photos
                           </div>
                           <div className="text-xs italic text-gray-400">Featured</div>
@@ -781,7 +784,7 @@ export async function getStaticProps({ params }) {
 
   // Pass post data to the page via props
   return {
-    props: { data, slug: params.slug },
+    props: { data : data , slug: params.slug },
     // Re-generate the post at most once per second
     // if a request comes in
     revalidate: 1,
