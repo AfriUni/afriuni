@@ -7,6 +7,8 @@ const CountryFragment = gql`
     slug
     databaseId
     image
+    is_country
+    flag
   }
 `;
 

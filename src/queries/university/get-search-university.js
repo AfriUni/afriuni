@@ -5,6 +5,7 @@ const GET_UNIVERSITY_SEARCH = gql`
     universities(where: { search: $search }) {
       nodes {
         title
+        slug
         address
         databaseId
         course_count
@@ -21,6 +22,11 @@ const GET_UNIVERSITY_SEARCH = gql`
         featuredImage {
           node {
             link
+          }
+        }
+        schoolTypes {
+          nodes {
+            name
           }
         }
       }

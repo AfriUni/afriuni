@@ -45,24 +45,13 @@ const OfficialSection = (props) => {
         ref={slideshow}
         className="overflow-hidden grid-flow-row auto-rows-fr auto-cols-fr"
       >
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
-        <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none">
-          <OfficialCard />
-        </div>
+        {props.offical.map((item, i) => {
+
+          return  <div className="relative px-1 md:px-2 pt-2 cursor-pointer outline-none focus:outline-none" key={i}>
+              <OfficialCard data={item} />
+          </div>
+        })}
+
       </Slider>
 
       <div className="absolute left-0 bottom-0 top-0 flex items-center justify-between">

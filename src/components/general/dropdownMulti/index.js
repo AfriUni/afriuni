@@ -16,6 +16,7 @@ const DropdownMulti = ({
   maxHeight = '',
   data = [],
   handleChange = () => {},
+  onChange
 }) => {
   const [initPosition, setInitPosition] = React.useState('origin-top-right right-0');
   const [isOpen, setIsOpen] = React.useState(false);
@@ -79,13 +80,15 @@ const DropdownMulti = ({
     setCurrentParent(currentTitle[0].name);
   };
 
-  const onSelectSubTab = (e, index, value) => {
+  const onSelectSubTab = (e, index, value, slug) => {
     e.preventDefault();
     setIsOpen(false);
     setCurrentTitle(value);
     setClickedTab(true);
     setCurrentIndexLink(index);
     setCurrentIndexTab(tabIndex);
+
+    if(onChange) onChange(slug);
   };
 
   const resetTab = () => {
@@ -94,6 +97,7 @@ const DropdownMulti = ({
     setCurrentIndexTab(0);
     setCurrentIndexLink(0);
     setCurrentTitle(title);
+    if(onChange) onChange('');
   };
 
   return (
@@ -164,7 +168,7 @@ const DropdownMulti = ({
                                   ? 'text-custom-secondary'
                                   : ''
                               }`}
-                              onClick={(e) => onSelectSubTab(e, index, sub.name)}
+                              onClick={(e) => onSelectSubTab(e, index, sub.name, sub.slug)}
                             >
                               {sub.name}
                             </a>

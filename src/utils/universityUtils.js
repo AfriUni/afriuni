@@ -11,7 +11,7 @@ export const getLocationData = (nodes) => {
 
   payload.city = nodes.find((x) => !x.is_country)?.name;
   payload.country = nodes.find((x) => x.is_country)?.name;
-  payload.countrySlug = nodes.find((x) => x.is_country)?.slug;
+  payload.slug = nodes.find((x) => x.is_country)?.slug;
   payload.flag = nodes.find((x) => x.is_country)?.flag;
 
   return payload;

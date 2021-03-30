@@ -95,7 +95,7 @@ module.exports = {
         600: '600px',
         700: '700px',
         800: '800px',
-        miniscreen: 'calc(100vw - 200px)',
+        'miniscreen': 'calc(100vw - 200px)',
       },
     },
   },

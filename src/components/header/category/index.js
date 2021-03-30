@@ -81,16 +81,16 @@ const CategoryMenu = (props) => {
             clickedTab ? 'block' : 'hidden md:block'
           } w-full md:relative min-h-3/4 bg-white absolute bg-white top-0 h-full md:h-auto`}
         >
-          {props.data.map((item, i) => {
+          {props.data.map((item, i1) => {
             return (
-              <TabPanel className="opacity-0" selectedClassName="opacity-100 bg-white" key={i}>
+              <TabPanel className="opacity-0" selectedClassName="opacity-100 bg-white" key={i1}>
                 <div className="md:px-10 col-count-1 col-w-sm w-full md:space-y-3 col-gap-sm md:pb-0">
-                  {item.children.nodes.map((child, i) => {
+                  {item.children.nodes.map((child, i2) => {
                     return (
                       <Link href="/">
                         <a
                           className="text-base font-medium md:font-light hover:text-custom-secondary block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0"
-                          key={i}
+                          key={i2}
                         >
                           {child.name}
                         </a>

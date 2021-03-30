@@ -6,6 +6,7 @@ const UniversityFragment = gql`
     title
     slug
     databaseId
+    logo
   }
 `;
 

@@ -16,7 +16,7 @@ Modal.setAppElement('#__next');
 Modal.defaultStyles.overlay.zIndex = '2000';
 Modal.defaultStyles.overlay.backgroundColor = '#0000004d';
 
-const Carousel = ({ images }) => {
+const Carousel = ({ images, images_medium,  title }) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const slideshow = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -69,8 +69,6 @@ const Carousel = ({ images }) => {
   const [customStyles, setCustomStyles] = React.useState(defaultStyles);
   const [isScreenMobile, setIsScreenMobile] = React.useState(false);
 
-  React.useEffect(() => {}, []);
-
   const onClose = () => {
     setIsOpen(!isOpen);
   };
@@ -119,14 +117,14 @@ const Carousel = ({ images }) => {
   return (
     <div className="relative">
       <Slider {...settings} ref={slideshow} className="overflow-hidden">
-        {images &&
-          images.length > 0 &&
-          images.map((img, index) => (
+        {images_medium &&
+        images_medium.length > 0 &&
+        images_medium.map((img, index) => (
             <div
               className="relative px-1 pt-2 outline-none cursor-pointer md:px-2 focus:outline-none"
               onClick={() => onOpenModal(index)}
             >
-              <img src={img} alt="" className="object-contain w-full h-full" />
+              <img src={img} alt="" className="object-contain w-full h-32" key={index}/>
             </div>
           ))}
       </Slider>
@@ -173,7 +171,7 @@ const Carousel = ({ images }) => {
             >
               <FontAwesomeIcon icon={faTimes} className="h-3 mr-2 text-custom-primary" />
             </button>
-            <h2 className="mt-2 mb-4 text-xl font-semibold">Gallery of american university</h2>
+            <h2 className="mt-2 mb-4 text-xl font-semibold">Gallery of {title}</h2>
             <hr />
           </div>
 
@@ -181,8 +179,8 @@ const Carousel = ({ images }) => {
             <Slider {...settingsModal} initialSlide={initModalShow} className="overflow-hidden">
               {images &&
                 images.length > 0 &&
-                images.map((img) => (
-                  <div className="relative px-1 pt-2 outline-none md:px-2 focus:outline-none">
+                images.map((img, i) => (
+                  <div className="relative px-1 pt-2 outline-none md:px-2 focus:outline-none" key={i}>
                     <img src={img} alt="" className="object-contain w-full h-miniscreen" />
                   </div>
                 ))}

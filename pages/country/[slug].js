@@ -29,6 +29,7 @@ import client from '../../src/apollo/client';
 import { GET_LOCATION_BY } from '../../src/queries/location/get-location';
 import { GET_COUNTRIES } from '../../src/queries/get-countries';
 import { GET_FEATURED_UNIVERSITY } from '../../src/queries/home/get-featuredUniversities';
+import {compareTaxonomy, shuffle} from "../../src/utils/compare";
 
 const CountryPage = (props) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -155,10 +156,10 @@ const CountryPage = (props) => {
         });
       });
 
-      setCategoryCourse(listCourses.sort(compareSpecialisation));
+      setCategoryCourse(listCourses.sort(compareTaxonomy));
       setCity(cities);
       setSchoolType(schooTypes);
-      setChildren(data.children.nodes);
+      // setChildren(data.children.nodes);
     }
   }, [data]);
 
@@ -179,62 +180,19 @@ const CountryPage = (props) => {
     }
   }, [props.featuredUniversity, data]);
 
-  const shuffle = (array) => {
-    array.sort(() => Math.random() - 0.5);
-  };
+  React.useEffect(() => {
+      filterUniv();
+  }, [data, changedSchoolType, changedCity]);
 
-  const compareSpecialisation = (a, b) => {
-    // Use toUpperCase() to ignore character casing
-    const bandA = a.name.toUpperCase();
-    const bandB = b.name.toUpperCase();
+  const filterUniv = () => {
+    let currentChildren = data.children.nodes || [];
 
-    let comparison = 0;
-    if (bandA > bandB) {
-      comparison = 1;
-    } else if (bandA < bandB) {
-      comparison = -1;
-    }
-    return comparison;
-  };
-
-  const compareCourses = (a, b) => {
-    // Use toUpperCase() to ignore character casing
-    const bandA = a.title.toUpperCase();
-    const bandB = b.title.toUpperCase();
-
-    let comparison = 0;
-    if (bandA > bandB) {
-      comparison = 1;
-    } else if (bandA < bandB) {
-      comparison = -1;
-    }
-    return comparison;
-  };
-
-  const onChangeCity = (slug, link = false, dataChildren = []) => {
-    let currentChildren = children;
-    if (!link) currentChildren = data.children.nodes;
-    if (dataChildren.length) currentChildren = dataChildren;
-
-    if (slug) {
-      const childrenChanged = currentChildren.filter((order) => order.slug === slug);
-      setChildren(childrenChanged);
-
-      if (changedSchoolType && !link) onChangeSchoolType(changedSchoolType, true, childrenChanged);
-    } else {
-      setChildren(currentChildren);
-      if (changedSchoolType && !link) onChangeSchoolType(changedSchoolType, true, currentChildren);
+    if(changedCity){
+       currentChildren = currentChildren.filter((order) => order.slug === changedCity);
     }
 
-    setChangedCity(slug);
-  };
+    if(changedSchoolType){
 
-  const onChangeSchoolType = (slug, link = false, dataChildren = []) => {
-    let currentChildren = children;
-    if (!link) currentChildren = [...data.children.nodes];
-    if (dataChildren.length) currentChildren = dataChildren;
-
-    if (slug) {
       const childrenChanged = [];
 
       currentChildren.map((item, i) => {
@@ -242,7 +200,7 @@ const CountryPage = (props) => {
 
         item.universities.nodes.map((subItem, ii) => {
           const schoolTypeChanged = subItem.schoolTypes.nodes.filter(
-            (order) => order.slug === slug,
+              (order) => order.slug === changedSchoolType,
           );
 
           if (schoolTypeChanged.length > 0) {
@@ -260,13 +218,18 @@ const CountryPage = (props) => {
         }
       });
 
-      setChildren(childrenChanged);
-
-      if (changedCity && !link) onChangeCity(changedCity, true, childrenChanged);
-    } else {
-      setChildren(currentChildren);
-      if (changedCity && !link) onChangeCity(changedCity, true, currentChildren);
+      currentChildren = childrenChanged;
     }
+
+    setChildren(currentChildren);
+
+  }
+
+  const onChangeCity = (slug) => {
+    setChangedCity(slug);
+  };
+
+  const onChangeSchoolType = (slug) => {
     setChangedSchoolType(slug);
   };
 
@@ -568,7 +531,7 @@ const CountryPage = (props) => {
                         </AccordionItemHeading>
                         <AccordionItemPanel className="px-8 md:py-5 py-3">
                           <ul className="list-disc leading-relaxed space-y-2 list-inside font-light text-sm md:text-base">
-                            {item.subCat.sort(compareSpecialisation).map((subcat, i) => {
+                            {item.subCat.sort(compareTaxonomy).map((subcat, i) => {
                               return (
                                 <li key={i}>
                                   <Link href={`/search`}>

@@ -19,6 +19,7 @@ export const GET_FEATURED_UNIVERSITY = gql`
             logo
             slug
             course_count
+            gallery
             locations {
               nodes {
                 name
