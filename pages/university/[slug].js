@@ -35,6 +35,7 @@ import {GET_FEATURED_UNIVERSITY} from "../../src/queries/home/get-featuredUniver
 import string_to_slug from "../../src/utils/slugify";
 import StudyProgrammes from "../../src/components/sections/university/studyProgrammes";
 import {shuffle} from "../../src/utils/compare";
+import SimilarUniv from "../../src/components/sections/university/similarUniv";
 
 
 Modal.setAppElement('#__next');
@@ -87,6 +88,7 @@ const UniversityPage = (props) => {
     const [isCurrentMobile, setIsCurrentMobile] = React.useState(false);
 
     const [otherUnivFeat, setOtherUnivFeat] = React.useState([]);
+    const [childCatForSimilar, setChildCatForSimilar] = React.useState([]);
 
     React.useEffect(() => {
         if(isMobile){
@@ -161,19 +163,19 @@ const UniversityPage = (props) => {
                             Home
                         </a>
                     </Link>
-                    <FontAwesomeIcon icon={faChevronRight} className="w-2"/>
+                    <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2"/>
                     <Link href="/country">
                         <a>
                             Countries
                         </a>
                     </Link>
-                    <FontAwesomeIcon icon={faChevronRight} className="w-2"/>
+                    <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2"/>
                     <Link href={`/country/${location.slug}`}>
                         <a>
                             {location.country}
                         </a>
                     </Link>
-                    <FontAwesomeIcon icon={faChevronRight} className="w-2 hidden md:inline"/>
+                    <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2 hidden md:inline"/>
                     <span className="hidden md:inline">
                         {data.title}
                     </span>
@@ -386,7 +388,7 @@ const UniversityPage = (props) => {
                            {/*<FontAwesomeIcon icon={faBookOpen} className="w-6" /> */}
                            <span>Study Programmes ({data.course_count})</span>
                         </div>
-                        <StudyProgrammes data={data}/>
+                        <StudyProgrammes data={data} setChildCatForSimilar={setChildCatForSimilar}/>
                     </div>
 
                     <div className="bg-white border border-gray-200 mb-6 relative">
@@ -659,7 +661,7 @@ const UniversityPage = (props) => {
                 </div>
 
                 <div className="col-span-1">
-                    {isPremium && (
+                    {(isPremium && data.whatsapp) && (
                         <div className="bg-white border border-gray-200 mb-6 relative md:p-6 p-4">
 
                             <div className="flex items-start space-x-4">
@@ -676,7 +678,9 @@ const UniversityPage = (props) => {
                                         Be directly connected to this University via
                                         WhatsApp
                                     </div>
-                                    <Button className="text-white rounded-lg" style={{ backgroundColor : "#085F56" }}>Chat now</Button>
+                                    <Link href={`https://wa.me/${data.whatsapp}?text=I want to contact your university.`} >
+                                        <a className="text-white rounded-lg px-5 py-3" target={'_blank'} style={{ backgroundColor : "#085F56" }}>Chat now </a>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -769,51 +773,7 @@ const UniversityPage = (props) => {
 
                     )}
 
-                    <div className="bg-white border border-gray-200 mb-6 relative">
-                        <div className="md:p-4 py-2 px-4 font-normal text-xl md:text-2xl border-b border-dotted border-gray-200 text-custom-secondary flex items-center space-x-3">
-                            <span> Similar Universities</span>
-                        </div>
-                        <div className="md:p-6 px-4 py-2">
-
-                            <div className="flex justify-between space-x-4">
-                                <div className="flex-1">
-                                    <Link href="/university/pretoria">
-                                        <a className="md:text-xl font-normal text-black truncate-2-lines max-h-13 leading-7">
-                                            Institut Universitaire de la Cote
-                                        </a>
-                                    </Link>
-                                    <div className="flex items-center justify-between mt-2 text-gray-600 text-sm md:text-base">
-                                        <div className="flex items-center space-x-2">
-                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" /> <span>Johannesburg, South Africa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex-none">
-                                    <img src="../univAshesi.jpeg" alt="" className="object-cover w-28 rounded-md h-full"/>
-                                </div>
-                            </div>
-                            <hr className="my-4 md:my-6"/>
-                            <div className="flex justify-between space-x-4">
-                                <div className="flex-1">
-                                    <Link href="/university/pretoria">
-                                        <a className="md:text-xl font-normal text-black truncate-2-lines max-h-13 leading-7">
-                                            Institut Universitaire de la Cote
-                                        </a>
-                                    </Link>
-                                    <div className="flex items-center justify-between mt-2 text-gray-600 text-sm md:text-base">
-                                        <div className="flex items-center space-x-2">
-                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3" /> <span>Johannesburg, South Africa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex-none">
-                                    <img src="../univAshesi.jpeg" alt="" className="object-cover w-28 h-14 rounded-md"/>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
+                    <SimilarUniv idCat={childCatForSimilar}/>
 
                 </div>
 

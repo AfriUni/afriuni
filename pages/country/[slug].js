@@ -185,43 +185,48 @@ const CountryPage = (props) => {
   }, [data, changedSchoolType, changedCity]);
 
   const filterUniv = () => {
-    let currentChildren = data.children.nodes || [];
 
-    if(changedCity){
-       currentChildren = currentChildren.filter((order) => order.slug === changedCity);
-    }
+    if(Object.entries(data).length) {
 
-    if(changedSchoolType){
+      let currentChildren = data.children.nodes || [];
 
-      const childrenChanged = [];
+      if(changedCity){
+        currentChildren = currentChildren.filter((order) => order.slug === changedCity);
+      }
 
-      currentChildren.map((item, i) => {
-        const universities = [];
+      if(changedSchoolType){
 
-        item.universities.nodes.map((subItem, ii) => {
-          const schoolTypeChanged = subItem.schoolTypes.nodes.filter(
-              (order) => order.slug === changedSchoolType,
-          );
+        const childrenChanged = [];
 
-          if (schoolTypeChanged.length > 0) {
-            universities.push(subItem);
+        currentChildren.map((item, i) => {
+          const universities = [];
+
+          item.universities.nodes.map((subItem, ii) => {
+            const schoolTypeChanged = subItem.schoolTypes.nodes.filter(
+                (order) => order.slug === changedSchoolType,
+            );
+
+            if (schoolTypeChanged.length > 0) {
+              universities.push(subItem);
+            }
+          });
+
+          if (universities.length > 0) {
+            const currentItem = {
+              universities: {
+                nodes: universities,
+              },
+            };
+            childrenChanged.push({ ...item, ...currentItem });
           }
         });
 
-        if (universities.length > 0) {
-          const currentItem = {
-            universities: {
-              nodes: universities,
-            },
-          };
-          childrenChanged.push({ ...item, ...currentItem });
-        }
-      });
+        currentChildren = childrenChanged;
+      }
 
-      currentChildren = childrenChanged;
+      setChildren(currentChildren);
+
     }
-
-    setChildren(currentChildren);
 
   }
 

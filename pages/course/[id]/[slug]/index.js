@@ -64,12 +64,20 @@ const CoursesPage = (props) => {
             <Link href="/">
               <a>Home</a>
             </Link>
-            <FontAwesomeIcon icon={faChevronRight} className="w-2" />
+            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2" />
             <Link href="/country">
-              <a>Courses</a>
+              <a>Country</a>
             </Link>
-            <FontAwesomeIcon icon={faChevronRight} className="w-2" />
-            <span>American University in Cairo</span>
+            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2" />
+            <Link href="/country">
+              <a>Egypt</a>
+            </Link>
+            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2" />
+            <Link href="/University">
+              <a>University</a>
+            </Link>
+            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2 hidden md:inline" />
+            <span className="hidden md:inline">American University in Cairo</span>
           </div>
         </div>
       </div>
@@ -502,7 +510,7 @@ const CoursesPage = (props) => {
               <div className="md:p-4 py-2 px-4 font-medium text-xl md:text-2xl border-b border-dotted border-gray-200 flex items-center justify-center space-x-3">
                 <span className="relative">
                   <span className="absolute -top-1.5 inline-flex rounded-full text-white bg-custom-secondary p-1">
-                    <FontAwesomeIcon icon={faPlus} className="w-2" />
+                    <FontAwesomeIcon icon={faPlus} className="w-2 h-2" />
                   </span>
                   <FontAwesomeIcon icon={faBell} className="md:w-6 w-4 text-custom-secondary" />
                 </span>

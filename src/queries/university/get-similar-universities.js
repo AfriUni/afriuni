@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
+import UniversityFragment from "../fragments/university";
 
-const query = gql`
-  query courses($search: String!, $count: Int!) {
-    universities(where: { search: $search }, first: $count) {
+const GET_SIMILAR_UNIVERSITY = gql`
+  query GET_SIMILAR_UNIVERSITY($similar: String!, $count: Int!) {
+    universities(where: { similar: $similar, data_type : "specialisation" }, first: $count) {
       nodes {
-        title
+        ...UniversityFragment
         address
-        databaseId
         featuredImage {
           node {
             link
@@ -15,6 +15,7 @@ const query = gql`
       }
     }
   }
+  ${UniversityFragment}
 `;
 
-export default query;
+export default GET_SIMILAR_UNIVERSITY;

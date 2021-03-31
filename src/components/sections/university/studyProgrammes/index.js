@@ -45,6 +45,7 @@ const StudyProgrammes = (props) => {
             const durations = [];
 
             const parentCategory = [];
+            const childCategoryId = []
 
             currentData.course.nodes.map((item, index) => {
 
@@ -61,6 +62,11 @@ const StudyProgrammes = (props) => {
                             parentCategory.push(i.databaseId);
                         }
                     }else{
+
+                        if(!childCategoryId.includes(i.databaseId)){
+                            childCategoryId.push(i.databaseId);
+                        }
+
                         if(!parentCategory.includes(i.parent.node.databaseId)){
 
                             const saveCat = {
@@ -123,6 +129,8 @@ const StudyProgrammes = (props) => {
             setCategoryCourse(coursesCategory);
             setStudyLevel(studiesLevel);
             setDuration(durations);
+
+            if(props.setChildCatForSimilar) props.setChildCatForSimilar(childCategoryId);
         }
 
     }, [props.data]);
