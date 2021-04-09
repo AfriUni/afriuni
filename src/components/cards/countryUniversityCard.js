@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
 const CountryUniversityCard = (props) => {
-  console.log(props.data);
 
   return (
     <div className="bg-white border border-gray-200 md:p-4 py-2 px-4">

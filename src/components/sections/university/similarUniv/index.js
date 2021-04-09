@@ -24,7 +24,6 @@ const SimilarUniv = (props) => {
             });
 
             if (queryData?.data) setData(queryData?.data?.universities?.nodes);
-            console.log(data);
         }
 
     }, [props.idCat])
