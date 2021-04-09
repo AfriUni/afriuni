@@ -515,9 +515,9 @@ const UniversityPage = (props) => {
                                                             {faculty.name}
                                                         </div>
                                                         {faculty.subFaculty.length > 0 && (
-                                                            <div className="w-1/5 flex justify-center text-custom-primary pr-6">
+                                                            <div className="flex justify-center text-custom-primary pr-6">
                                                                 <AccordionItemState>
-                                                                    {({ expanded }) => (expanded ? <FontAwesomeIcon icon={faMinus} className="mt-2 w-4 h-4 text-base" /> : <FontAwesomeIcon icon={faPlus} className="mt-2 w-4 h-4 text-base" />)}
+                                                                    {({ expanded }) => (expanded ? <FontAwesomeIcon icon={faMinus} className="w-4 h-4 text-base" /> : <FontAwesomeIcon icon={faPlus} className="w-4 h-4 text-base" />)}
                                                                 </AccordionItemState>
                                                             </div>
                                                         )}
@@ -539,7 +539,7 @@ const UniversityPage = (props) => {
                                                                                 </div>
 
                                                                                 {sub.subFaculty.length > 0 && (
-                                                                                    <div className="w-auto flex justify-center items-center text-red-400 border border-red-400 px-1 py-0">
+                                                                                    <div className="w-auto h-5 flex justify-center items-center text-red-400 border border-red-400 px-1 py-0">
                                                                                         <AccordionItemState>
                                                                                             {({ expanded }) => (expanded ? <FontAwesomeIcon icon={faMinus} className="w-2 h-2 text-base" /> : <FontAwesomeIcon icon={faPlus} className="w-2 h-2 text-base" />)}
                                                                                         </AccordionItemState>
@@ -551,11 +551,11 @@ const UniversityPage = (props) => {
                                                                         {sub.subFaculty.length > 0 && (
                                                                             <AccordionItemPanel className="px-4 py-1">
                                                                                 {sub.subFaculty.map((sub2, inS2) => (
-                                                                                    <Link href={"#"} key={inS2}>
-                                                                                        <a className="text-left py-2 px-4 text-black font-normal inline-block">
-                                                                                            {sub2.name}
-                                                                                        </a>
-                                                                                    </Link>
+
+                                                                                    <div className="text-left py-2 px-4 text-black font-normal" key={inS2} >
+                                                                                        {sub2.name}
+                                                                                    </div>
+
                                                                                 ))}
                                                                             </AccordionItemPanel>
                                                                         )}
@@ -565,11 +565,9 @@ const UniversityPage = (props) => {
                                                             )
 
                                                             if(!sub.subFaculty.length) return (
-                                                                <Link href={"#"} key={inS1}>
-                                                                    <a className="text-left py-2 px-0 text-black font-normal inline-block w-full">
-                                                                        {sub.name}
-                                                                    </a>
-                                                                </Link>
+                                                                <div className="text-left py-2 px-0 text-black font-normal w-full" key={inS1}>
+                                                                    {sub.name}
+                                                                </div>
                                                             )
 
                                                         })}

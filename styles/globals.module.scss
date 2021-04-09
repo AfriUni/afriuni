@@ -56,12 +56,12 @@
    @apply bg-transparent w-full;
 
   .accordion_heading_2 {
-    @apply flex justify-between items-stretch outline-none focus:outline-none pl-6 py-3 border-0 bg-white;
+    @apply flex justify-between items-center outline-none focus:outline-none pl-6 py-3 border-0 bg-white;
     //@apply flex justify-between items-stretch focus:outline-none pl-6 py-5;
   }
 
   .accordion_subheading{
-    @apply flex px-0 w-full space-x-3 outline-none focus:outline-none items-stretch border-0;
+    @apply flex px-0 w-full space-x-3 outline-none focus:outline-none items-center justify-between border-0;
   }
 }
 
