@@ -11,6 +11,9 @@ const defaultOptions = {
     fetchPolicy: 'mo-cache',
     errorPolicy: 'all',
   },
+  fetchOptions: {
+    mode: 'no-cors',
+  },
 };
 
 const cache = new InMemoryCache({

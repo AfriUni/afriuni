@@ -400,7 +400,7 @@ const UniversityPage = (props) => {
                         <div className="px-4 py-6 md:p-6">
 
                             {data?.keyInfo_detail && (
-                                <>
+                                <React.Fragment>
                                     <div className="text-black font-normal text-lg mb-3">Key infos :</div>
                                     <div className=" md:pl-10 mb-6">
                                         <ShowMoreText
@@ -420,11 +420,11 @@ const UniversityPage = (props) => {
                                             />
                                         </ShowMoreText>
                                     </div>
-                                </>
+                                </React.Fragment>
                             )}
 
                             {data?.admission_detail && (
-                                <>
+                                <React.Fragment>
                                     <div className="text-black font-normal text-lg mb-3">Admission Requirements:</div>
                                     <div className=" md:pl-10 mb-6">
                                         <ShowMoreText
@@ -444,7 +444,7 @@ const UniversityPage = (props) => {
                                             />
                                         </ShowMoreText>
                                     </div>
-                                </>
+                                </React.Fragment>
                             )}
 
                             {data?.howApply_detail && (
@@ -507,8 +507,8 @@ const UniversityPage = (props) => {
                             <Accordion className={styles.accordion_2} allowZeroExpanded allowMultipleExpanded>
                                 <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
                                     {data?.faculties.length > 0 &&
-                                        data?.faculties.map((faculty, i) => (
-                                            <AccordionItem key={i}>
+                                        data?.faculties.map((faculty, index) => (
+                                            <AccordionItem key={index}>
                                                 <AccordionItemHeading>
                                                     <AccordionItemButton className={styles.accordion_heading_2}>
                                                         <div className={`font-normal`}>
@@ -527,10 +527,10 @@ const UniversityPage = (props) => {
                                                 {faculty.subFaculty.length > 0 && (
                                                     <AccordionItemPanel className="bg-white px-6 pb-6 w-full">
 
-                                                        {faculty.subFaculty.map((sub, i) => {
+                                                        {faculty.subFaculty.map((sub, inS1) => {
 
                                                             if(sub.subFaculty.length > 0) return (
-                                                                <Accordion className={styles.accordion_2} allowZeroExpanded key={i}>
+                                                                <Accordion className={styles.accordion_2} allowZeroExpanded key={inS1}>
                                                                     <AccordionItem>
                                                                         <AccordionItemHeading>
                                                                             <AccordionItemButton className={styles.accordion_subheading}>
@@ -550,9 +550,9 @@ const UniversityPage = (props) => {
                                                                         </AccordionItemHeading>
                                                                         {sub.subFaculty.length > 0 && (
                                                                             <AccordionItemPanel className="px-4 py-1">
-                                                                                {sub.subFaculty.map((sub2, i) => (
-                                                                                    <Link href={"#"}>
-                                                                                        <a className="text-left py-2 px-4 text-black font-normal inline-block" key={i}>
+                                                                                {sub.subFaculty.map((sub2, inS2) => (
+                                                                                    <Link href={"#"} key={inS2}>
+                                                                                        <a className="text-left py-2 px-4 text-black font-normal inline-block">
                                                                                             {sub2.name}
                                                                                         </a>
                                                                                     </Link>
@@ -565,8 +565,8 @@ const UniversityPage = (props) => {
                                                             )
 
                                                             if(!sub.subFaculty.length) return (
-                                                                <Link href={"#"}>
-                                                                    <a className="text-left py-2 px-0 text-black font-normal inline-block w-full" key={i}>
+                                                                <Link href={"#"} key={inS1}>
+                                                                    <a className="text-left py-2 px-0 text-black font-normal inline-block w-full">
                                                                         {sub.name}
                                                                     </a>
                                                                 </Link>
@@ -693,8 +693,8 @@ const UniversityPage = (props) => {
                                 <span> Contact this University</span>
                             </div>
                             <div className="p-6 space-y-5">
-                                {data?.contacts.map((contact) => (
-                                    <div>
+                                {data?.contacts.map((contact, index) => (
+                                    <div key={index}>
                                         <div className="text-xl font-normal text-black">{contact.name}</div>
                                         <div className="py-3 text-gray-400"> {contact.post}</div>
                                         <ButtonRedSecondary
@@ -720,8 +720,8 @@ const UniversityPage = (props) => {
                                 <span> Others Universities in {location.country}</span>
                             </div>
                             <div className="md:p-6 p-4">
-                                {otherUnivFeat.slice(0, 2).map((item, i) => {
-                                    return <div className="pb-4" key={i}>
+                                {otherUnivFeat.slice(0, 2).map((item, index) => {
+                                    return <div className="pb-4" key={index}>
                                         <div className="flex justify-between space-x-4">
                                             <div className="flex-none">
                                                 <img src={item.featuredImage ? item.featuredImage.node.sourceUrl : ''} alt="" className="object-cover w-28 h-14 h-full rounded-md"/>

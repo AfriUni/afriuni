@@ -39,9 +39,8 @@ const SimilarUniv = (props) => {
 
             {data.map((item, i) => {
 
-
                 return (
-                    <>
+                    <React.Fragment key={i}>
                         {i >= 1 && (<hr className="my-4 md:my-6"/>)}
                         <div className="flex justify-between space-x-4">
                             <div className="flex-1">
@@ -60,10 +59,11 @@ const SimilarUniv = (props) => {
                                 <img src={item.featuredImage.node.link} alt="" className="object-cover w-28 rounded-md h-full"/>
                             </div>
                         </div>
-                    </>
+                    </React.Fragment>
                 )
 
             })}
+
         </div>
     </div>
 }

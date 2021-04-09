@@ -123,8 +123,9 @@ const Carousel = ({ images, images_medium,  title }) => {
             <div
               className="relative px-1 pt-2 outline-none cursor-pointer md:px-2 focus:outline-none"
               onClick={() => onOpenModal(index)}
+              key={index}
             >
-              <img src={img} alt="" className="object-contain w-full h-32" key={index}/>
+              <img src={img} alt="" className="object-contain w-full h-32"/>
             </div>
           ))}
       </Slider>

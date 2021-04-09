@@ -299,7 +299,7 @@ const StudyProgrammes = (props) => {
                     {children.slice(0, showCount).map((item, index) => {
 
                         return (
-                            <>
+                            <React.Fragment key={index}>
                                 <tr>
                                     <td colSpan={3} className="md:text-2xl text-xl font-normal text-black pt-4 md:pt-6 pb-3">{item.name}</td>
                                 </tr>
@@ -322,7 +322,7 @@ const StudyProgrammes = (props) => {
                                         </td>
                                     </tr>
                                 })}
-                            </>
+                            </React.Fragment>
                         )
 
                     })}
