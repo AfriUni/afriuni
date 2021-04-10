@@ -46,7 +46,7 @@ const OtherUniv = ({location}) => {
                     <div className="w-1/12 pt-2 text-gray-400"><FontAwesomeIcon icon={faCircle} className="w-3" /></div>
                     <div className="w-11/12">
                         <Link href={`/university/${item.slug}`}>
-                            <a className="md:text-xl text-lg font-normal text-custom-primary truncate-2-lines max-h-12 leading-6">
+                            <a className="md:text-xl text-lg font-normal text-custom-primary truncate-2-lines max-h-16 leading-6">
                                 {item.title}
                             </a>
                         </Link>

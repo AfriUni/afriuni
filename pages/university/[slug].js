@@ -26,7 +26,7 @@ import {useMediaQuery} from "react-responsive";
 import DropdownMulti from "../../src/components/general/dropdownMulti";
 import ShowMoreText from 'react-show-more-text';
 import OfficialSection from "../../src/components/sections/university/official";
-import GET_UNIVERSITY from "../../src/queries/university/get-university";
+import GET_UNIVERSITY_BY from "../../src/queries/university/get-university";
 import client from "../../src/apollo/client";
 import {getLocationData} from "../../src/utils/universityUtils";
 import Modal from "react-modal";
@@ -192,7 +192,7 @@ const UniversityPage = (props) => {
                         <div className="flex px-10 py-10 space-x-10 items-center">
                             <div>
                                 <div className="bg-white rounded-xl p-1">
-                                    <img src={data?.logo} alt="" className="object-contain h-full w-32"/>
+                                    <img src={data?.logo} alt="" className="object-contain h-32 w-32"/>
                                 </div>
                             </div>
                             <div>
@@ -255,7 +255,7 @@ const UniversityPage = (props) => {
                                 </div>
                                 <div className="hidden md:block">
                                     <div className="border border-gray-200 rounded-xl p-1">
-                                        <img src={data?.logo} alt="" className="object-contain w-32 h-full"/>
+                                        <img src={data?.logo} alt="" className="object-contain w-32 h-32"/>
                                     </div>
                                 </div>
                             </div>
@@ -577,7 +577,6 @@ const UniversityPage = (props) => {
 
                                             </AccordionItem>
                                         ))}
-
                                 </div>
                             </Accordion>
 
@@ -771,7 +770,7 @@ const UniversityPage = (props) => {
 
                     )}
 
-                    <SimilarUniv idCat={childCatForSimilar}/>
+                    <SimilarUniv idCat={data?.schoolTypes?.nodes}/>
 
                 </div>
 
@@ -827,12 +826,11 @@ export async function getStaticProps({params}) {
     // params contains the post `id`.
     // If the route is like /posts/1, then params.id is 1
     const data = await client.query({
-        query: GET_UNIVERSITY,
+        query: GET_UNIVERSITY_BY,
         variables: {
             id: params.slug,
         },
     });
-
 
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');

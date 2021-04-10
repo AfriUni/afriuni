@@ -3,8 +3,8 @@ import CountryFragment from '../fragments/country';
 import UniversityFragment from "../fragments/university";
 import CourseFragment from "../fragments/course";
 
-const GET_UNIVERSITY = gql`
-   query GET_UNIVERSITY($id: ID!) {
+const GET_UNIVERSITY_BY = gql`
+   query GET_UNIVERSITY_BY($id: ID!) {
     university(id: $id, idType: SLUG) {
       ...UniversityFragment
       seo {
@@ -43,7 +43,9 @@ const GET_UNIVERSITY = gql`
       }
       schoolTypes {
         nodes {
+          databaseId
           name
+          slug
         }
       }
       locations {
@@ -71,20 +73,12 @@ const GET_UNIVERSITY = gql`
           name
           post
       }
-      schoolTypes {
-        edges {
-          node {
-            id
-            description
-          }
-        }
-      }
       contacts {
         emails
         name
         post
       }      
-        course(first: 1000) {
+        courses(first: 1000) {
             nodes {
                 ...CourseFragment
                 studiesLevel(first: 1000){
@@ -123,4 +117,4 @@ const GET_UNIVERSITY = gql`
   ${UniversityFragment}
 `;
 
-export default GET_UNIVERSITY;
+export default GET_UNIVERSITY_BY;

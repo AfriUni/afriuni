@@ -1,13 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   faBookOpen,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
   faPlay,
-  faPlayCircle,
   faUniversity,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/globals.module.scss';
@@ -98,7 +97,8 @@ const CountryPage = (props) => {
       const cities = [];
       const schooTypes = [];
       data.children?.nodes.map((item, i) => {
-        cities.push({
+
+        if(item.universities.nodes.length) cities.push({
           id: item.databaseId,
           name: item.name,
           slug: item.slug,
@@ -159,7 +159,7 @@ const CountryPage = (props) => {
       setCategoryCourse(listCourses.sort(compareTaxonomy));
       setCity(cities);
       setSchoolType(schooTypes);
-      // setChildren(data.children.nodes);
+      setChildren(data.children.nodes);
     }
   }, [data]);
 
@@ -442,6 +442,7 @@ const CountryPage = (props) => {
 
                 <div className="">
                   {children.map((item, i) => {
+                    if(!item.universities.nodes.length) return ''
                     return (
                       <div key={i}>
                         <div className="md:text-2xl text-xl font-normal text-black mt-5 md:mt-12 mb-3">

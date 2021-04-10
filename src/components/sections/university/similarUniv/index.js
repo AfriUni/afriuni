@@ -13,13 +13,20 @@ const SimilarUniv = (props) => {
 
         if(props.idCat.length){
 
-            const idCat = props.idCat.join(",");
+            const idCat = [];
+
+            props.idCat.map((item) => {
+                idCat.push(item.databaseId);
+            });
+
+            const idCatRequest = idCat.join(",");
 
             const queryData = await client.query({
                 query: GET_SIMILAR_UNIVERSITY,
                 variables: {
-                    similar: idCat,
-                    count : 10
+                    data: idCatRequest,
+                    count : 10,
+                    random : true
                 },
             });
 
@@ -43,7 +50,7 @@ const SimilarUniv = (props) => {
                     <React.Fragment key={i}>
                         {i >= 1 && (<hr className="my-4 md:my-6"/>)}
                         <div className="flex justify-between space-x-4">
-                            <div className="flex-1">
+                            <div className="flex-1 flex flex-col justify-between">
                                 <Link href={`/university/${item.slug}`}>
                                     <a className="md:text-xl font-normal text-black truncate-2-lines max-h-13 leading-7">
                                         {item.title}
@@ -56,7 +63,7 @@ const SimilarUniv = (props) => {
                                 </div>
                             </div>
                             <div className="flex-none">
-                                <img src={item.featuredImage.node.link} alt="" className="object-cover w-28 rounded-md h-full"/>
+                                <img src={Object.entries(item.featuredImage).length ? item.featuredImage.node.link : ''} alt="" className="object-cover w-28 rounded-md h-20"/>
                             </div>
                         </div>
                     </React.Fragment>

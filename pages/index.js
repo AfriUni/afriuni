@@ -58,6 +58,7 @@ export async function getStaticProps(context) {
     },
   });
 
+
   const featuredUniversity = await client.query({
     query: GET_FEATURED_UNIVERSITY,
     variables: {

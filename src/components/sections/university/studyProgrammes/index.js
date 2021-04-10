@@ -47,7 +47,7 @@ const StudyProgrammes = (props) => {
             const parentCategory = [];
             const childCategoryId = []
 
-            currentData.course.nodes.map((item, index) => {
+            currentData.courses.nodes.map((item, index) => {
 
                 // specialisation data
                 const specialisation = item.specialisations.nodes;
@@ -140,7 +140,7 @@ const StudyProgrammes = (props) => {
         const childrenData = [];
         const childrenCatData = [];
 
-        data.course.nodes.map((item, index) => {
+        data.courses.nodes.map((item, index) => {
 
             // specialisation data
             const specialisation = item.specialisations.nodes;
