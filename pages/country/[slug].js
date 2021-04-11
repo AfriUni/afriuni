@@ -29,8 +29,12 @@ import { GET_LOCATION_BY } from '../../src/queries/location/get-location';
 import { GET_COUNTRIES } from '../../src/queries/get-countries';
 import { GET_FEATURED_UNIVERSITY } from '../../src/queries/home/get-featuredUniversities';
 import {compareTaxonomy, shuffle} from "../../src/utils/compare";
+import {useRouter} from "next/router";
 
 const CountryPage = (props) => {
+
+  const router = useRouter();
+
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isCurrentMobile, setIsCurrentMobile] = React.useState(false);
   const [data, setData] = React.useState({});
@@ -46,6 +50,18 @@ const CountryPage = (props) => {
 
   const [changedCity, setChangedCity] = React.useState('');
   const [changedSchoolType, setChangedSchoolType] = React.useState('');
+
+  let reload = false;
+
+  if(props.data){
+    reload = data.id !== undefined && data.id !== props.data?.data.id;
+  }
+
+  React.useEffect(() => {
+    if(reload) {
+      router.push('/university/'+props.data?.data.slug);
+    }
+  }, [])
 
   React.useEffect(() => {
     if (isMobile) {

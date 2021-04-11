@@ -51,7 +51,7 @@ const SimilarUniv = (props) => {
                         {i >= 1 && (<hr className="my-4 md:my-6"/>)}
                         <div className="flex justify-between space-x-4">
                             <div className="flex-1 flex flex-col justify-between">
-                                <Link href={`/university/${item.slug}`}>
+                                <Link href={"/university/"+item.slug}>
                                     <a className="md:text-xl font-normal text-black truncate-2-lines max-h-13 leading-7">
                                         {item.title}
                                     </a>
@@ -63,7 +63,7 @@ const SimilarUniv = (props) => {
                                 </div>
                             </div>
                             <div className="flex-none">
-                                <img src={Object.entries(item.featuredImage).length ? item.featuredImage.node.link : ''} alt="" className="object-cover w-28 rounded-md h-20"/>
+                                <img src={item.featuredImage && Object.entries(item.featuredImage).length ? item.featuredImage.node.link : ''} alt="" className="object-cover w-28 rounded-md h-20"/>
                             </div>
                         </div>
                     </React.Fragment>

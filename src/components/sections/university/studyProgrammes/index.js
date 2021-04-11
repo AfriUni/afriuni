@@ -130,7 +130,8 @@ const StudyProgrammes = (props) => {
             setStudyLevel(studiesLevel);
             setDuration(durations);
 
-            if(props.setChildCatForSimilar) props.setChildCatForSimilar(childCategoryId);
+            const savedChildren = setChildrenData(props.data)
+            setChildren(savedChildren);
         }
 
     }, [props.data]);
@@ -310,7 +311,7 @@ const StudyProgrammes = (props) => {
                                                 <a>{subItem.title}</a>
                                             </Link>
                                         </td>
-                                        <td className="hidden md:table-cell md:w-1/4">{subItem.studiesLevel.nodes[0].name}</td>
+                                        <td className="hidden md:table-cell md:w-1/4">{subItem.studiesLevel.nodes.length ? subItem.studiesLevel.nodes[0].name : ""}</td>
                                         <td className="text-right hidden md:table-cell md:w-1/4">
                                             {(subItem.duration_time.time_number && subItem.duration_time.time_month) ? (
                                                 <>

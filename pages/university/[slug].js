@@ -88,7 +88,12 @@ const UniversityPage = (props) => {
     const [isCurrentMobile, setIsCurrentMobile] = React.useState(false);
 
     const [otherUnivFeat, setOtherUnivFeat] = React.useState([]);
-    const [childCatForSimilar, setChildCatForSimilar] = React.useState([]);
+
+    let reload = false;
+
+    if(props.data){
+        reload = data.id !== undefined && data.id !== props.data?.id;
+    }
 
     React.useEffect(() => {
         if(isMobile){
@@ -101,13 +106,24 @@ const UniversityPage = (props) => {
     }, [isMobile]);
 
     React.useEffect(() => {
+        if(reload) {
+            router.push('/university/'+props.data.slug);
+        }
+    }, [])
+
+    React.useEffect(() => {
+
         const currentData = props.data || {};
 
         setData(currentData);
 
         setLocation(getLocationData(currentData.locations?.nodes));
 
-        if(currentData.is_premium) setIsPremium(true);
+        if(currentData.is_premium) {
+            setIsPremium(true);
+        }else{
+            setIsPremium(false);
+        }
 
     }, [props.data]);
 
@@ -388,7 +404,7 @@ const UniversityPage = (props) => {
                            {/*<FontAwesomeIcon icon={faBookOpen} className="w-6" /> */}
                            <span>Study Programmes ({data.course_count})</span>
                         </div>
-                        <StudyProgrammes data={data} setChildCatForSimilar={setChildCatForSimilar}/>
+                        <StudyProgrammes data={data}/>
                     </div>
 
                     <div className="bg-white border border-gray-200 mb-6 relative">
