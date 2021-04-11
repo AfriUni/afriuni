@@ -1,51 +1,43 @@
 import { gql } from '@apollo/client';
+import CategoryFragment from "../fragments/category";
+import CourseFragment from "../fragments/course";
+import UniversityFragment from "../fragments/university";
 
 export const GET_CATEGORY_BY = gql`
-  query GET_CATEGORY_BY($id: ID!) {
+  query GET_CATEGORY_BY($id: ID!, $random: Boolean, $count_course: Int) {
     specialisation(id: $id, idType: SLUG) {
-      id
-      name
+      ...CategoryFragment
       logo
-      slug
-      databaseId
       university_count
-      count
-      children(first: 1000) {
+      courses(where : { random : $random }, first: $count_course) {
         nodes {
-          id
-          databaseId
-          name
-          slug
-          courses(first: 1000) {
+          ...CourseFragment
+          university{
             nodes {
-              id
-              databaseId
-              title
-              slug
-              university(first: 1000) {
-                nodes {
-                  id
-                  title
-                  databaseId
-                  logo
-                  slug
-                  locations(first: 1000) {
-                    nodes {
-                      name
-                      is_country
-                    }
-                  }
-                }
-              }
-              studiesLevel(first: 1000) {
+              ...UniversityFragment
+              locations {
                 nodes {
                   name
+                  is_country
                 }
               }
             }
           }
+          studiesLevel {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+      children(first: 1000) {
+        nodes {
+          ...CategoryFragment
         }
       }
     }
   }
+  ${CategoryFragment}
+  ${CourseFragment}
+  ${UniversityFragment}
 `;

@@ -23,26 +23,14 @@ const DisciplinesPage = (props) => {
   const [courses, setCourses] = React.useState([]);
 
   React.useEffect(() => {
-    const currentData = props.data?.data.specialisation || [];
+    const currentData = props.data || {};
     setData(currentData);
 
-    const currentCourses = currentData?.children?.nodes || [];
-    const courseShow = [];
-    shuffle(currentCourses);
-
-    for (let i = 0; i < currentCourses.length; i++) {
-      const courses = currentCourses[i].courses.nodes;
-      shuffle(courses);
-      if (courseShow.length < 6) {
-        courses.slice(0, 2).map((crs) => {
-          courseShow.push(crs);
-        });
-      } else {
-        break;
-      }
+    if(Object.entries(currentData).length){
+      const currentCourses = currentData?.courses.nodes.slice(0,6);
+      shuffle(currentCourses);
+      setCourses(currentCourses)
     }
-
-    setCourses(courseShow);
   }, [props.data]);
 
   if (Object.entries(data).length === 0) return <div>Loading</div>;
@@ -187,11 +175,12 @@ export async function getStaticProps({ params }) {
     query: GET_CATEGORY_BY,
     variables: {
       id: params.slug,
+      random : true
     },
   });
 
   // Pass post data to the page via props
-  return { props: { data }, revalidate: 1 };
+  return { props: { data : data.data.specialisation }, revalidate: 1 };
 }
 
 export default DisciplinesPage;
