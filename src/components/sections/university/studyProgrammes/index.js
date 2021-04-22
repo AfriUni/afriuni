@@ -155,6 +155,7 @@ const StudyProgrammes = (props) => {
                         };
 
                         saveData.courses.push(item)
+                        saveData.courses.sort(comparePostType)
                         childrenData.push(saveData);
                         childrenCatData.push(i.databaseId)
                     }else{

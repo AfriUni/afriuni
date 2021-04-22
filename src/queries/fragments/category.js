@@ -7,6 +7,9 @@ const CategoryFragment = gql`
     name
     slug
     count
+    seo {
+        title
+    }
   }
 `;
 

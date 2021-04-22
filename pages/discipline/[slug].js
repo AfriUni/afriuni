@@ -38,7 +38,7 @@ const DisciplinesPage = (props) => {
   return (
     <div>
       <Head>
-        <title> {data?.name.toLowerCase()}- Afriuni</title>
+        <title> {data.seo.title} - Discipline</title>
       </Head>
 
       <div className="bg-white">

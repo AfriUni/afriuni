@@ -87,10 +87,9 @@ const CategoryMenu = (props) => {
                 <div className="md:px-10 col-count-1 col-w-sm w-full md:space-y-3 col-gap-sm md:pb-0">
                   {item.children.nodes.map((child, i2) => {
                     return (
-                      <Link href="/">
+                      <Link href="/" key={i2}>
                         <a
                           className="text-base font-medium md:font-light hover:text-custom-secondary block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0"
-                          key={i2}
                         >
                           {child.name}
                         </a>

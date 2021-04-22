@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../../styles/globals.module.scss';
 import DestinationCard from '../../src/components/cards/destinationCard';
 import client from '../../src/apollo/client';
-import { GET_COUNTRIES } from '../../src/queries/get-countries';
-import { GET_CATEGORIE } from '../../src/queries/get-categories';
+import { GET_COUNTRIES } from '../../src/queries/location/get-locations';
+import { GET_CATEGORIE } from '../../src/queries/specialisation/get-categories';
 import { GET_FEATURED_COURSE } from '../../src/queries/home/get-featuredCourses';
 import { GET_FEATURED_UNIVERSITY } from '../../src/queries/home/get-featuredUniversities';
 

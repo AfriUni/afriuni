@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import CountryFragment from './fragments/country';
+import CountryFragment from '../fragments/country';
 
 export const GET_COUNTRIES = gql`
   query {

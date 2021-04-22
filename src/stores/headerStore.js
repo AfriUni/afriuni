@@ -2,8 +2,8 @@ import { action, computed, observable, configure } from 'mobx';
 import React from 'react';
 import { enableStaticRendering } from 'mobx-react';
 import client from '../apollo/client';
-import { GET_CATEGORIE } from '../queries/get-categories';
-import { GET_COUNTRIES } from '../queries/get-countries';
+import { GET_CATEGORIE } from '../queries/specialisation/get-categories';
+import { GET_COUNTRIES } from '../queries/location/get-locations';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 enableStaticRendering(true);
 

@@ -9,6 +9,9 @@ const CountryFragment = gql`
     image
     is_country
     flag
+    seo {
+        title
+    }
   }
 `;
 

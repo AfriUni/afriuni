@@ -7,9 +7,6 @@ const GET_UNIVERSITY_BY = gql`
    query GET_UNIVERSITY_BY($id: ID!) {
     university(id: $id, idType: SLUG) {
       ...UniversityFragment
-      seo {
-        title
-      }
       address      
       cover
       content
@@ -23,7 +20,6 @@ const GET_UNIVERSITY_BY = gql`
       website_url
       course_count
       number_student
-      is_premium
       ranking
       undergraduate_fees_max {
           currency

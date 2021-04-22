@@ -7,6 +7,12 @@ const UniversityFragment = gql`
     slug
     databaseId
     logo
+    seo {
+       title
+    }
+    is_premium
+    premium_start_at
+    premium_end_at
   }
 `;
 

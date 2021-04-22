@@ -26,7 +26,7 @@ import { useMediaQuery } from 'react-responsive';
 import DestinationCard from '../../src/components/cards/destinationCard';
 import client from '../../src/apollo/client';
 import { GET_LOCATION_BY } from '../../src/queries/location/get-location';
-import { GET_COUNTRIES } from '../../src/queries/get-countries';
+import { GET_COUNTRIES } from '../../src/queries/location/get-locations';
 import { GET_FEATURED_UNIVERSITY } from '../../src/queries/home/get-featuredUniversities';
 import {compareTaxonomy, shuffle} from "../../src/utils/compare";
 import {useRouter} from "next/router";
@@ -259,7 +259,7 @@ const CountryPage = (props) => {
   return (
     <div>
       <Head>
-        <title>{data.name} - Country - Afriuni</title>
+        <title>{data.seo.title} - Country</title>
       </Head>
 
       <div className="bg-white">

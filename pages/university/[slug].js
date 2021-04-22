@@ -168,7 +168,7 @@ const UniversityPage = (props) => {
 
     return <div>
         <Head>
-            <title>{ data.seo.title } - University - Afriuni</title>
+            <title>{ data.seo.title } - University</title>
         </Head>
 
         <div className="bg-white">

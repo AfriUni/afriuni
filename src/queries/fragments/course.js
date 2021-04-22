@@ -6,6 +6,12 @@ const CourseFragment = gql`
     title
     slug
     databaseId
+    seo {
+       title
+    }
+    is_premium
+    premium_start_at
+    premium_end_at
   }
 `;
 

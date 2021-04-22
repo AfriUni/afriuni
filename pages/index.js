@@ -7,8 +7,8 @@ import DestinationSection from '../src/components/sections/home/destination';
 import FeaturedCoursesSection from '../src/components/general/featuredCourses';
 import FeaturedUniversitySection from '../src/components/sections/home/featuredUniversity';
 import client from '../src/apollo/client';
-import { GET_CATEGORIE } from '../src/queries/get-categories';
-import { GET_COUNTRIES } from '../src/queries/get-countries';
+import { GET_CATEGORIE } from '../src/queries/specialisation/get-categories';
+import { GET_COUNTRIES } from '../src/queries/location/get-locations';
 import { GET_FEATURED_COURSE } from '../src/queries/home/get-featuredCourses';
 import { GET_FEATURED_UNIVERSITY } from '../src/queries/home/get-featuredUniversities';
 

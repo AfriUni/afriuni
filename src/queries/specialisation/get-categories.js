@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import CategoryFragment from './fragments/category';
+import CategoryFragment from '../fragments/category';
 
 export const GET_CATEGORIE = gql`
   query {
