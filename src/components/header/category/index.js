@@ -90,6 +90,7 @@ const CategoryMenu = (props) => {
                       <Link href="/" key={i2}>
                         <a
                           className="text-base font-medium md:font-light hover:text-custom-secondary block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0"
+                          onClick={props.toggle}
                         >
                           {child.name}
                         </a>

@@ -8,6 +8,7 @@ import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
 import string_to_slug from "../../../../utils/slugify";
 import {useMediaQuery} from "react-responsive";
 import {comparePostType, compareTaxonomy, sleep} from "../../../../utils/compare";
+import {getCategoryList, getDurationList, getStudyLvlList} from "../../../../utils/universityUtils";
 
 const StudyProgrammes = (props) => {
 
@@ -40,91 +41,9 @@ const StudyProgrammes = (props) => {
 
         if (Object.entries(currentData).length) {
 
-            const coursesCategory = [];
-            const studiesLevel = [];
-            const durations = [];
-
-            const parentCategory = [];
-            const childCategoryId = []
-
-            currentData.courses.nodes.map((item, index) => {
-
-                // specialisation data
-                const specialisation = item.specialisations.nodes;
-                specialisation.map((i) => {
-                    if(!i.parent){
-                        if(!parentCategory.includes(i.databaseId)){
-                            const saveCat = {
-                                name : i.name,
-                                subMenu : []
-                            }
-                            coursesCategory.push(saveCat);
-                            parentCategory.push(i.databaseId);
-                        }
-                    }else{
-
-                        if(!childCategoryId.includes(i.databaseId)){
-                            childCategoryId.push(i.databaseId);
-                        }
-
-                        if(!parentCategory.includes(i.parent.node.databaseId)){
-
-                            const saveCat = {
-                                name : i.parent.node.name,
-                                subMenu : []
-                            }
-                            saveCat.subMenu.push({
-                                id: i.databaseId,
-                                name: i.name,
-                                slug: i.slug,
-                            })
-
-                            coursesCategory.push(saveCat);
-                            parentCategory.push(i.parent.node.databaseId);
-
-                        }else{
-
-                            const index = parentCategory.indexOf(i.parent.node.databaseId);
-                            const currentChildCat = coursesCategory[index].subMenu.find((x) => x.id === i.databaseId);
-
-                            if(!currentChildCat){
-                                coursesCategory[index].subMenu.push({
-                                    id: i.databaseId,
-                                    name: i.name,
-                                    slug: i.slug,
-                                });
-                            }
-
-                        }
-                    }
-                });
-
-                // study Level data
-                const studyLevel = item.studiesLevel.nodes;
-                studyLevel.map((i) => {
-                    if(!studiesLevel.find((x) => x.id === i.databaseId)){
-                        studiesLevel.push({
-                            id: i.databaseId,
-                            name: i.name,
-                            slug: i.slug,
-                        })
-                    }
-                })
-
-                // duration Data
-                const duration = item.duration_time;
-                if(duration.time_month && duration.time_number){
-                    const name = duration.time_number+" "+duration.time_month;
-                    if(!durations.find((x) => x.name === name)){
-                        durations.push({
-                            id : index,
-                            name : name,
-                            slug : string_to_slug(name)
-                        });
-                    }
-                }
-
-            });
+            const coursesCategory = getCategoryList(currentData.courses.nodes);
+            const studiesLevel = getStudyLvlList(currentData.courses.nodes);
+            const durations = getDurationList(currentData.courses.nodes);
 
             setCategoryCourse(coursesCategory);
             setStudyLevel(studiesLevel);
@@ -139,7 +58,6 @@ const StudyProgrammes = (props) => {
     const setChildrenData = (data) => {
 
         const childrenData = [];
-        const childrenCatData = [];
 
         data.courses.nodes.map((item, index) => {
 
@@ -147,27 +65,27 @@ const StudyProgrammes = (props) => {
             const specialisation = item.specialisations.nodes;
             specialisation.map((i) => {
                    // data of course
-                    if(!childrenCatData.includes(i.databaseId)){
+                    if(!i.parent) return;
+
+                    const index = childrenData.findIndex(x => x.databaseId === i.parent.node.databaseId);
+
+                    if(childrenData[index] && childrenData.length){
+                        const existCourse = childrenData[index].courses.find((x) => x.databaseId === item.databaseId);
+                        if(!existCourse){
+                            childrenData[index].courses.push(item);
+                            childrenData[index].courses.sort(comparePostType);
+                        }
+                    }else{
                         const saveData = {
-                            name : i.name,
-                            slug : i.slug,
+                            name : i.parent.node.name,
+                            databaseId : i.parent.node.databaseId,
                             courses : []
                         };
 
                         saveData.courses.push(item)
                         saveData.courses.sort(comparePostType)
                         childrenData.push(saveData);
-                        childrenCatData.push(i.databaseId)
-                    }else{
-                        const index = childrenCatData.indexOf(i.databaseId);
-                        const existCourse = childrenData[index].courses.find((x) => x.databaseId === item.databaseId);
-                        if(!existCourse){
-                            childrenData[index].courses.push(item);
-                            childrenData[index].courses.sort(comparePostType);
-                        }
                     }
-
-
             });
         });
 
@@ -204,7 +122,20 @@ const StudyProgrammes = (props) => {
         let currentChildren = setChildrenData(props.data);
 
         if(changeCategory){
-            currentChildren = currentChildren.filter((order) => order.slug === changeCategory);
+            currentChildren = currentChildren.reduce((filter, order) => {
+                const exist = order.courses.filter((sub) => {
+                    const index = sub.specialisations.nodes.findIndex(x => x.slug === changeCategory);
+                    return index >= 0;
+                })
+                if(exist.length){
+                    filter.push({
+                        name : order.name,
+                        databaseId : order.databaseId,
+                        courses : exist
+                    });
+                }
+                return filter
+            }, []);
         }
 
         if(changeStudyLevel){
@@ -213,7 +144,7 @@ const StudyProgrammes = (props) => {
                if(exist.length){
                    filter.push({
                        name : order.name,
-                       slug : order.slug,
+                       databaseId : order.databaseId,
                        courses : exist
                    });
                }
@@ -230,7 +161,7 @@ const StudyProgrammes = (props) => {
                 if(exist.length){
                     filter.push({
                         name : order.name,
-                        slug : order.slug,
+                        databaseId : order.databaseId,
                         courses : exist
                     });
                 }
@@ -264,7 +195,7 @@ const StudyProgrammes = (props) => {
                                   onChange={(data) => onChangeStudyLevel(data)}
                         >
                             <ItemDropdown title={"All Study Level"} value={""} classInactive="font-medium text-custom-primary">All Study Level</ItemDropdown>
-                            {studyLevel.map((item) => {
+                            {studyLevel && studyLevel.map((item) => {
                                 return <ItemDropdown title={item.name} value={item.slug} classInactive="font-medium text-custom-primary" key={item.id}>{item.name}</ItemDropdown>
                             })}
 
@@ -279,7 +210,7 @@ const StudyProgrammes = (props) => {
                                   onChange={(data) => onChangeDuration(data)}
                                   position="center">
                             <ItemDropdown title={"All Durations"} value={""} classInactive="font-medium text-custom-primary">All Durations</ItemDropdown>
-                            {duration.map((item) => {
+                            {duration && duration.map((item) => {
                                 return <ItemDropdown title={item.name} value={item.slug} classInactive="font-medium text-custom-primary" key={item.id}>{item.name}</ItemDropdown>
                             })}
                         </Dropdown>

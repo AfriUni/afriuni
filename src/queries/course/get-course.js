@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import CourseFragment from "../fragments/course";
 import UniversityFragment from "../fragments/university";
 import CountryFragment from "../fragments/country";
+import CategoryFragment from "../fragments/category";
 
 const GET_COURSE_BY = gql `
     query GET_COURSE_BY($id: ID!) {
@@ -100,11 +101,22 @@ const GET_COURSE_BY = gql `
                     name
                 }
             }
+            specialisations {
+              nodes {
+                ...CategoryFragment
+                children {
+                  nodes {
+                    ...CategoryFragment
+                  }
+                }
+              }
+            }
         }
     }
     ${CourseFragment}
     ${UniversityFragment}
     ${CountryFragment}
+    ${CategoryFragment}
 `;
 
 export default GET_COURSE_BY;

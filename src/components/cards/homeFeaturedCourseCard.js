@@ -18,11 +18,11 @@ const HomeFeaturedCourseCard = (props) => (
     </Link>
     <div className="flex items-end justify-between flex-1 w-full">
       <div className="w-full">
-        <div className="text-sm font-medium text-custom-primary md:text-custom-primary_2 md:text-lg">
+        {/*<div className="text-sm font-medium text-custom-primary md:text-custom-primary_2 md:text-lg">*/}
           <Link href={`/university/${props.data.university?.nodes[0].slug}`}>
-            <a>{props.data.university?.nodes[0].title}</a>
+            <a className={"text-sm font-medium text-custom-primary md:text-custom-primary_2 md:text-lg"}>{props.data.university?.nodes[0].title}</a>
           </Link>
-        </div>
+        {/*</div>*/}
         <div className="flex items-center justify-between w-full mt-1 font-medium md:font-normal md:mt-0">
           <div className="text-xs text-gray-400 md:text-base">
             {props.data.university?.nodes[0].locations.nodes.map((loc, i) => {

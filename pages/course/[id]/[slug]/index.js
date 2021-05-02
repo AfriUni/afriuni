@@ -138,9 +138,9 @@ const CoursesPage = (props) => {
             <Link href={`/country/${location.slug}`}>
               <a>{location.country}</a>
             </Link>
-            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2" />
+            <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2 hidden md:inline" />
             <Link href={`/university/${university.slug}`}>
-              <a>{university.title}</a>
+              <a className="hidden md:inline">{university.title}</a>
             </Link>
             <FontAwesomeIcon icon={faChevronRight} className="w-2 h-2 hidden md:inline" />
             <span className="hidden md:inline">{data.title}</span>
@@ -178,13 +178,14 @@ const CoursesPage = (props) => {
                 </div>
               </div>
 
-              <div className="flex items-center md:space-x-8 w-full justify-between md:justify-start">
-                <div>
-                  <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
-                    <FontAwesomeIcon icon={faThumbsUp} className="md:w-3 w-3" /> <span>Like</span>
-                  </div>
-                </div>
-                <div>
+              <div className="flex items-center w-full justify-between md:justify-start">
+              {/*<div className="flex items-center md:space-x-8 w-full justify-between md:justify-start">*/}
+                {/*<div>*/}
+                {/*  <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">*/}
+                {/*    <FontAwesomeIcon icon={faThumbsUp} className="md:w-3 w-3" /> <span>Like</span>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
+                <div className={"md:hidden"}>
                   <div
                       onClick={() => shareuniversity()}
                       className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
@@ -243,10 +244,12 @@ const CoursesPage = (props) => {
                         <>
                           {data.admission.slice(0,2).map((item, i) => {
 
-                            if(item.type === 'coming') return <span key={i} className="">Coming soon</span>
-                            if(item.type === 'future') return <span key={i}>{moment(item.date).format(item.format)}</span>
-                            if(item.type === 'current') return <span key={i} className="text-green-600">Current Open</span>
-                            if(item.type === 'end') return <span key={i} className="text-red-600">Closed</span>
+                            const session_name = data.admission.length > 1 ? <span className={"text-xs italic"}>({item.name || 'Session '+(i + 1)})</span> : "";
+
+                            if(item.type === 'coming') return <span key={i} className="">Coming soon {session_name}</span>
+                            if(item.type === 'future') return <span key={i}>{moment(item.date).format(item.format)} {session_name}</span>
+                            if(item.type === 'current') return <span key={i} className="text-green-600">Current Open {session_name}</span>
+                            if(item.type === 'end') return <span key={i} className="text-red-600">Closed {session_name}</span>
 
                           })}
                         </>
@@ -364,17 +367,21 @@ const CoursesPage = (props) => {
 
                         return (
                             <React.Fragment key={i}>
-                              {data.sessions.length > 1 && (<div className="italic underline mb-2">{item.name}</div>)}
+                              {data.sessions.length > 1 && (<div className="italic underline mb-2">{item.name || 'Session '+(i +1)}</div>)}
                               <ul className="list-outside ml-4 list-disc">
                                 <li>
                                   Classe begin : <span className="font-medium">{date_class_begin}</span>
                                 </li>
-                                <li>
-                                  Applications start in: <span className="font-medium">{date_start_application}</span>
-                                </li>
-                                <li>
-                                  Application deadline: <span className="font-medium">{date_deadline_application}</span>
-                                </li>
+                                {!data.all_open && (
+                                    <>
+                                      <li>
+                                        Applications start in: <span className="font-medium">{date_start_application}</span>
+                                      </li>
+                                      <li>
+                                        Application deadline: <span className="font-medium">{date_deadline_application}</span>
+                                      </li>
+                                    </>
+                                )}
                               </ul>
                             </React.Fragment>
                         )
@@ -383,7 +390,7 @@ const CoursesPage = (props) => {
                     </td>
                   </tr>
                   <tr className="divide-x divide-gray-200">
-                    <td className="font-medium text-lg px-4 py-4 flex items-start">
+                    <td className="font-medium md:text-lg px-4 py-4 flex items-start">
                       <span>Application fees</span>
                     </td>
                     <td className="px-4 py-4">
@@ -398,7 +405,7 @@ const CoursesPage = (props) => {
                     </td>
                   </tr>
                   <tr className="divide-x divide-gray-200">
-                    <td className="font-medium text-lg px-4 py-4 flex items-start">
+                    <td className="font-medium md:text-lg px-4 py-4 flex items-start">
                       <span>Tuition fees</span>
                     </td>
                     <td className="px-4 py-4">
@@ -682,14 +689,17 @@ const CoursesPage = (props) => {
                 <div className="text-custom-secondary">{university.course_count} Courses</div>
               </div>
 
-              <div className="flex items-center md:space-x-8 md:w-2/3 justify-between">
-                <div>
-                  <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
-                    <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
+              <div className="flex items-center md:w-2/3 justify-between">
+              {/*<div className="flex items-center md:space-x-8 md:w-2/3 justify-between">*/}
+                {/*<div>*/}
+                {/*  <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">*/}
+                {/*    <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
+                <div className={"md:hidden"}>
+                  <div
+                      onClick={() => shareuniversity()}
+                      className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
                     <FontAwesomeIcon icon={faShare} className="md:w-5 w-3" /> <span>Share</span>
                   </div>
                 </div>
@@ -801,7 +811,7 @@ const CoursesPage = (props) => {
                 <span> Similar Programmes</span>
               </div>
               <div className="h-full">
-                <TabSimilarSection />
+                <TabSimilarSection currentCourseId={data.databaseId} data={data.specialisations.nodes} country={location}/>
               </div>
             </div>
           </div>

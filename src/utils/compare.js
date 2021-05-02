@@ -26,6 +26,20 @@ export const comparePostType = (a, b) => {
     return comparison;
 };
 
+export const compareArray = (a, b) => {
+    // Use toUpperCase() to ignore character casing
+    const bandA = a.name;
+    const bandB = b.name;
+
+    let comparison = 0;
+    if (bandA > bandB) {
+        comparison = 1;
+    } else if (bandA < bandB) {
+        comparison = -1;
+    }
+    return comparison;
+};
+
 export const shuffle = (array) => {
     array.sort(() => Math.random() - 0.5);
 };

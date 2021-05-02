@@ -195,11 +195,11 @@ const Header = (props) => {
                 {(openCategory || openCountry || openOther) && (
                   <div className="md:border-t border-gray-200 shadow-xl md:rounded-b-lg absolute right-0 left-0 md:h-auto md:bg-white origin-top z-30 h-full overflow-y-scroll md:overflow-hidden">
                     <div className="container mx-auto md:px-6 md:py-4 text-sm">
-                      {openCategory && <CategoryMenu data={categories} />}
+                      {openCategory && <CategoryMenu data={categories} toggle={toggleNav} />}
 
-                      {openCountry && <CountryMenu data={locations} />}
+                      {openCountry && <CountryMenu data={locations} toggle={toggleNav}/>}
 
-                      {openOther && <OthersMenu />}
+                      {openOther && <OthersMenu toggle={toggleNav}/>}
                     </div>
                   </div>
                 )}

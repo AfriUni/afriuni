@@ -220,13 +220,13 @@ const UniversityPage = (props) => {
                                     <span>{data?.address}</span>
                                 </div>
 
-                                <div className="flex items-center md:space-x-8 w-full justify-between md:justify-start">
-                                    <div>
-                                        <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-2 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
-                                            <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>
-                                        </div>
-                                    </div>
-                                    <div>
+                                <div className={`flex items-center ${data.video_link && isCurrentMobile ? "md:space-x-8" : ""} w-full justify-between md:justify-start`}>
+                                    {/*<div>*/}
+                                    {/*    <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-2 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">*/}
+                                    {/*        <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                    <div className={"md:hidden"}>
                                         <div
                                             onClick={() => shareuniversity()}
                                             className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-2 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
@@ -276,13 +276,14 @@ const UniversityPage = (props) => {
                                 </div>
                             </div>
 
-                            <div className="flex items-center md:space-x-8 w-full justify-between md:justify-start">
-                                <div>
-                                    <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
-                                        <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>
-                                    </div>
-                                </div>
-                                <div>
+                            <div className="flex items-center w-full justify-between md:justify-start">
+                            {/*<div className="flex items-center md:space-x-8 w-full justify-between md:justify-start">*/}
+                                {/*<div>*/}
+                                {/*    <div className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">*/}
+                                {/*        <FontAwesomeIcon icon={faThumbsUp} className="md:w-5 w-3" /> <span>Like</span>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                                <div className={"md:hidden"}>
                                     <div
                                         onClick={() => shareuniversity()}
                                         className="bg-gray-200 hover:bg-red-200 hover:text-red-600 text-black text-xs md:text-base md:px-4 px-4 py-2 flex items-center space-x-2 rounded-lg cursor-pointer">
@@ -364,7 +365,7 @@ const UniversityPage = (props) => {
                             <div className="col-span-1 bg-white p-4 md:p-0 border border-gray-200 md:border-0">
                                 <div className="md:pl-6 pl-2 space-y-2">
                                     <div className="flex items-start space-x-1 text-base">
-                                        <span className="w-1/12 pt-2"><FontAwesomeIcon icon={faCircle} className="w-2 text-gray-400" /></span> <span className="w-11/12">{data?.schoolTypes?.nodes && data?.schoolTypes.nodes[0].name}</span>
+                                        <span className="w-1/12 pt-2"><FontAwesomeIcon icon={faCircle} className="w-2 text-gray-400" /></span> <span className="w-11/12">{data?.schoolTypes?.nodes.length > 0 && data?.schoolTypes.nodes[0].name}</span>
                                     </div>
                                     <div className="flex items-start space-x-1 text-base">
                                         <span className="w-1/12 pt-2"><FontAwesomeIcon icon={faCircle} className="w-2 text-gray-400" /></span> <span className="w-11/12">{data?.number_student} Students</span>

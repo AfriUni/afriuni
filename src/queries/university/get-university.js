@@ -74,38 +74,38 @@ const GET_UNIVERSITY_BY = gql`
         name
         post
       }      
-        courses(first: 1000) {
-            nodes {
-                ...CourseFragment
-                studiesLevel(first: 1000){
-                  nodes {
+      courses(first: 1000) {
+         nodes {
+            ...CourseFragment
+            studiesLevel(first: 1000){
+              nodes {
+                id
+                name
+                databaseId
+                slug
+              }
+            }
+            duration_time {
+              time_month
+              time_number
+            }
+            specialisations(first: 1000) {
+                nodes {
                     id
-                    name
                     databaseId
+                    name
                     slug
-                  }
-                }
-                duration_time {
-                  time_month
-                  time_number
-                }
-                specialisations(first: 1000) {
-                    nodes {
-                        id
-                        databaseId
-                        name
-                        slug
-                        parent {
-                            node {
-                                id
-                                databaseId
-                                name
-                            }
+                    parent {
+                        node {
+                            id
+                            databaseId
+                            name
                         }
                     }
                 }
             }
-        }
+         }
+      }
     }
   }
   ${CountryFragment}

@@ -12,7 +12,9 @@ const CountryMenu = (props) => {
         {props.data.map((item, i) => {
           return (
             <Link href={`/country/${item.slug}`} key={i}>
-              <a className="mr-10 font-medium md:font-normal hover:text-custom-secondary inline-block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0 uppercase">
+              <a
+                  onClick={props.toggle}
+                 className="md:mr-10 font-medium md:font-normal hover:text-custom-secondary inline-block py-4 border-b border-gray-400 md:border-0 md:py-0 px-5 md:px-0 uppercase">
                 {item.name}
               </a>
             </Link>
