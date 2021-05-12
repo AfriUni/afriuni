@@ -60,7 +60,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "node-fetch": ">=2.6.1",
-    "postcss": "^8.1.9",
+    "postcss": "^8.2.10",
     "postcss-preset-env": "^6.7.0",
     "styled-components": "^5.2.1",
     "tailwind.macro": "^1.0.0-alpha.10",
